@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>使用 xres-code-generator 生成解析代码 &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于这些文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="高级功能" href="advance_usage.html" />
+    <link rel="prev" title="数据类型说明" href="data_types.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> xresloader-document
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_types.html">数据类型说明</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">使用 xres-code-generator 生成解析代码</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#proto">第一步，在proto文件中声明加载器和索引类型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#c">生成C++加载代码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lua">生成Lua加载代码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">生成C#加载代码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">自定义模板和更多语言</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>使用 xres-code-generator 生成解析代码</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/users/xres_code_generator.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id2">
+<span id="id3"></span><h1>使用 <a class="reference external" href="https://github.com/xresloader/xres-code-generator">xres-code-generator</a> 生成解析代码<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://github.com/xresloader/xres-code-generator">xres-code-generator</a> 是一个基于 <a class="reference external" href="https://www.makotemplates.org/">mako</a> 模板引擎的代码生成工具，其内部提供了一些模板用于生成加载 <a class="reference external" href="https://github.com/xresloader">xresloader</a> 所生成的数据的代码。</p>
+<p>仓库地址: <a class="reference external" href="https://github.com/xresloader/xres-code-generator">https://github.com/xresloader/xres-code-generator</a></p>
+<section id="proto">
+<h2>第一步，在proto文件中声明加载器和索引类型<a class="headerlink" href="#proto" title="Permalink to this heading"></a></h2>
+<p>导入 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">&quot;xrescode_extensions_v3.proto&quot;;</span></code> 然后声明loader。更多可选项见: <a class="reference external" href="https://github.com/xresloader/xres-code-generator/blob/master/pb_extension/xrescode_extensions_v3.proto">xres-code-generator 插件</a></p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="na">syntax</span> <span class="o">=</span> <span class="s">&quot;proto3&quot;</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="s">&quot;xrescode_extensions_v3.proto&quot;</span><span class="p">;</span>
+
+<span class="kd">message</span> <span class="nc">role_upgrade_cfg</span> <span class="p">{</span>
+    <span class="k">option</span> <span class="p">(</span><span class="n">xrescode.loader</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">file_path</span> <span class="o">:</span> <span class="s">&quot;role_upgrade_cfg.bytes&quot;</span>
+        <span class="n">indexes</span> <span class="o">:</span> <span class="p">{</span>
+            <span class="n">fields</span> <span class="o">:</span> <span class="s">&quot;Id&quot;</span>
+            <span class="n">index_type</span> <span class="o">:</span> <span class="n">EN_INDEX_KL</span> <span class="c1">// Key - List 类型索引，映射关系为: (Id) =&gt; list&lt;role_upgrade_cfg&gt;</span>
+        <span class="p">}</span>
+        <span class="n">indexes</span> <span class="o">:</span> <span class="p">{</span>
+            <span class="n">fields</span> <span class="o">:</span> <span class="s">&quot;Id&quot;</span>
+            <span class="n">fields</span> <span class="o">:</span> <span class="s">&quot;Level&quot;</span>
+            <span class="n">index_type</span> <span class="o">:</span> <span class="n">EN_INDEX_KV</span> <span class="c1">// Key - Value 类型索引，映射关系为: (Id, Level) =&gt; role_upgrade_cfg</span>
+        <span class="p">}</span>
+        <span class="c1">// 允许多个索引，索引命名是所有的 [fields 字段].join(&quot;_&quot;)，也可以通过name属性自定义</span>
+        <span class="n">tags</span> <span class="o">:</span> <span class="s">&quot;client&quot;</span>
+        <span class="n">tags</span> <span class="o">:</span> <span class="s">&quot;server&quot;</span>
+    <span class="p">};</span>
+
+    <span class="kt">int32</span>  <span class="na">CostValue</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="kt">int32</span>  <span class="na">ScoreAdd</span>  <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="c">
+<h2>生成C++加载代码<a class="headerlink" href="#c" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>从 <a class="reference external" href="https://github.com/xresloader/xres-code-generator/tree/master/template/common/cpp">xres-code-generator/template/common/cpp</a> 拷贝公共代码</p></li>
+<li><p>使用模板 <code class="docutils literal notranslate"><span class="pre">template/config_manager.h.mako</span></code> , <code class="docutils literal notranslate"><span class="pre">template/config_manager.cpp.mako</span></code> , <code class="docutils literal notranslate"><span class="pre">template/config_easy_api.h.mako</span></code> , <code class="docutils literal notranslate"><span class="pre">template/config_easy_api.cpp.mako</span></code> , <code class="docutils literal notranslate"><span class="pre">template/config_set.h.mako</span></code> , <code class="docutils literal notranslate"><span class="pre">template/config_set.cpp.mako</span></code> 生成加载代码</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">REPO_DIR</span><span class="o">=</span><span class="nv">$PATH_TO_xres_code_generator</span><span class="p">;</span>
+mkdir -p <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pbcpp&quot;</span><span class="p">;</span>
+cp -rvf <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/common/cpp/&quot;</span>* <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pbcpp&quot;</span><span class="p">;</span>
+
+python <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/tools/find_protoc.py&quot;</span> -I <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/proto&quot;</span> -I <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/pb_extension&quot;</span> <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/proto/&quot;</span>*.proto -o <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/sample.pb&quot;</span> <span class="p">;</span>
+
+<span class="c1"># You can use --pb-include-prefix &quot;pbdesc/&quot; to set subdirectory for generated files. This will influence the generated #include &lt;...FILE_PATH&gt;</span>
+python <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/xrescode-gen.py&quot;</span> -i <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template&quot;</span> -p <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/sample.pb&quot;</span> -o <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pbcpp&quot;</span>  <span class="se">\</span>
+    -g <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/config_manager.h.mako&quot;</span> -g <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/config_manager.cpp.mako&quot;</span>                       <span class="se">\</span>
+    -g <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/config_easy_api.h.mako&quot;</span> -g <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/config_easy_api.cpp.mako&quot;</span>                     <span class="se">\</span>
+    -l <span class="s2">&quot;H:</span><span class="nv">$REPO_DIR</span><span class="s2">/template/config_set.h.mako&quot;</span> -l <span class="s2">&quot;S:</span><span class="nv">$REPO_DIR</span><span class="s2">/template/config_set.cpp.mako&quot;</span>                           <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">config_manager</span></code> 和 <code class="docutils literal notranslate"><span class="pre">config_easy_api</span></code> 访问数据</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;config_manager.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;config_easy_api.h&quot;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 初始化 ....</span>
+    <span class="n">excel</span><span class="o">::</span><span class="n">config_manager</span><span class="o">::</span><span class="n">me</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">init</span><span class="p">();</span>
+
+    <span class="c1">// 可选</span>
+    <span class="c1">// excel::config_manager::me()-&gt;set_version_loader([] (std::string&amp; out) {</span>
+    <span class="c1">//     // 读取版本号然后写出到 out</span>
+    <span class="c1">//     return true; // 成功返回true，失败返回false</span>
+    <span class="c1">// });</span>
+
+    <span class="c1">// If you want to intergrate file loader to your system(such as UE or Unity), you should provide buffer loader handle</span>
+    <span class="c1">// excel::config_manager::me()-&gt;set_buffer_loader([] (std::string&amp; out, const char* file_path) {</span>
+    <span class="c1">//     // 读取文件名为file_path的二进制数据然后写出到out</span>
+    <span class="c1">//     // file_path 即是pb插件 option (xrescode.loader) 中的file_path字段</span>
+    <span class="c1">//     return true; // 成功返回true，失败返回false</span>
+    <span class="c1">// });</span>
+
+    <span class="c1">// Set 设置设置保留多少组不同版本的数据</span>
+    <span class="c1">// excel::config_manager::me()-&gt;set_group_number(8);</span>
+
+    <span class="c1">// 使用 set_override_same_version(true) 可以强制触发读取，即便版本号没变.</span>
+    <span class="c1">// excel::config_manager::me()-&gt;set_override_same_version(true);</span>
+
+    <span class="c1">// 设置日志输出回调，默认会输出到标准输出</span>
+    <span class="c1">// excel::config_manager::me()-&gt;set_on_log([](const log_caller_info_t&amp; caller, const char* content) {</span>
+    <span class="c1">//    // ...</span>
+    <span class="c1">// });</span>
+
+    <span class="c1">// 还可以设置一些其他的事件回调，详见生成的代码</span>
+
+    <span class="c1">// 调用 reload 来执行某个版本的数据加载</span>
+    <span class="n">excel</span><span class="o">::</span><span class="n">config_manager</span><span class="o">::</span><span class="n">me</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">reload</span><span class="p">();</span>
+
+    <span class="c1">// 然后就可以用config_easy_api或者config_manager的API读取数据了</span>
+    <span class="k">auto</span> <span class="n">cfg</span> <span class="o">=</span> <span class="n">excel</span><span class="o">::</span><span class="n">get_role_upgrade_cfg_by_id_level</span><span class="p">(</span><span class="mi">10001</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// using the Key-Value index: id_level</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cfg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">-&gt;</span><span class="n">DebugString</span><span class="p">().</span><span class="n">c_str</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>使用示例可参见 <a class="reference external" href="https://github.com/xresloader/xres-code-generator/tree/master/sample">xres-code-generator/sample</a> ，使用 <code class="docutils literal notranslate"><span class="pre">sample_gen.sh</span></code> 可生成协议代码和加载示例代码。</p>
+</section>
+<section id="lua">
+<h2>生成Lua加载代码<a class="headerlink" href="#lua" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>从 <a class="reference external" href="https://github.com/xresloader/xres-code-generator/tree/master/template/common/lua">xres-code-generator/template/common/lua</a> 拷贝公共代码</p></li>
+<li><p>使用模板 <code class="docutils literal notranslate"><span class="pre">template/DataTableCustomIndex.lua.mako</span></code> 和 <code class="docutils literal notranslate"><span class="pre">template/DataTableCustomIndex53.lua.mako</span></code> 生成加载代码</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">REPO_DIR</span><span class="o">=</span><span class="nv">$PATH_TO_xres_code_generator</span><span class="p">;</span>
+mkdir -p <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pblua&quot;</span><span class="p">;</span>
+cp -rvf <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/common/lua/&quot;</span>*.lua <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pblua&quot;</span><span class="p">;</span>
+
+python <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/tools/find_protoc.py&quot;</span> -I <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/proto&quot;</span> -I <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/pb_extension&quot;</span> <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/proto/&quot;</span>*.proto -o <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/sample.pb&quot;</span> <span class="p">;</span>
+
+python <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/xrescode-gen.py&quot;</span> -i <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template&quot;</span> -p <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/sample.pb&quot;</span> -o <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pblua&quot;</span>  <span class="se">\</span>
+    -g <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/DataTableCustomIndex.lua.mako&quot;</span>                                                               <span class="se">\</span>
+    -g <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/DataTableCustomIndex53.lua.mako&quot;</span>                                                             <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">DataTableService53</span></code> 访问数据</p></li>
+</ol>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 我们使用 require(...) to 来加载 DataTableService53,DataTableCustomIndex53 和生成的数据文件，请确保 require(FILE_PATH) 可以加载它们</span>
+<span class="c1">-- 假设 xresloader 生成的 lua 数据文件位于 ../../../xresloader/sample/proto_v3</span>
+<span class="nb">package.path</span> <span class="o">=</span> <span class="s1">&#39;../../../xresloader/sample/proto_v3/?.lua;&#39;</span> <span class="o">..</span> <span class="nb">package.path</span>
+<span class="kd">local</span> <span class="n">excel_config_service</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;DataTableService53&#39;</span><span class="p">)</span>
+
+<span class="c1">-- 设置日志输出回调</span>
+<span class="c1">-- excel_config_service:OnError = function (消息内容, 索引对象, 索引名称, 所有的key字段...) end</span>
+
+<span class="n">excel_config_service</span><span class="p">:</span><span class="n">ReloadTables</span><span class="p">()</span>
+
+<span class="kd">local</span> <span class="n">role_upgrade_cfg</span> <span class="o">=</span> <span class="n">excel_config_service</span><span class="p">:</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;role_upgrade_cfg&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">data</span> <span class="o">=</span> <span class="n">role_upgrade_cfg</span><span class="p">:</span><span class="n">GetByIndex</span><span class="p">(</span><span class="s1">&#39;id_level&#39;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">-- using the Key-Value index: id_level</span>
+<span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">%s=%s&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+<span class="kr">end</span>
+
+<span class="c1">-- 也可以通过DataTableService.GetCurrentGroup(self)获取分组和DataTableService.GetByGroup(self, group, loader_name)来实现配置分组和多版本功能</span>
+<span class="kd">local</span> <span class="n">current_group</span> <span class="o">=</span> <span class="n">excel_config_service</span><span class="p">:</span><span class="n">GetCurrentGroup</span><span class="p">()</span>
+<span class="kd">local</span> <span class="n">role_upgrade_cfg2</span> <span class="o">=</span> <span class="n">excel_config_service</span><span class="p">:</span><span class="n">GetByGroup</span><span class="p">(</span><span class="n">current_group</span><span class="p">,</span> <span class="s2">&quot;role_upgrade_cfg&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">data2</span> <span class="o">=</span> <span class="n">role_upgrade_cfg</span><span class="p">:</span><span class="n">GetByIndex</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">)</span> <span class="c1">-- using the Key-List index: id</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=======================&quot;</span><span class="p">)</span>
+<span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">v1</span> <span class="kr">in</span> <span class="nb">ipairs</span><span class="p">(</span><span class="n">data2</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">id: %s, level: %s&quot;</span><span class="p">,</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">v1</span><span class="p">.</span><span class="n">Id</span><span class="p">),</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">v1</span><span class="p">.</span><span class="n">Level</span><span class="p">)))</span>
+    <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v2</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span> <span class="kr">do</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">%s=%s&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">v2</span><span class="p">)))</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<p>使用示例可参见 <a class="reference external" href="https://github.com/xresloader/xres-code-generator/tree/master/sample">xres-code-generator/sample</a> ，使用 <code class="docutils literal notranslate"><span class="pre">sample_gen.sh</span></code> 可生成协议代码和加载示例代码。</p>
+</section>
+<section id="id4">
+<h2>生成C#加载代码<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>使用模板 <code class="docutils literal notranslate"><span class="pre">template/ConfigSet.cs.mako</span></code> 和 <code class="docutils literal notranslate"><span class="pre">template/ConfigSetManager.cs.mako</span></code> 生成加载代码</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">REPO_DIR</span><span class="o">=</span><span class="nv">$PATH_TO_xres_code_generator</span><span class="p">;</span>
+mkdir -p <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pbcs&quot;</span><span class="p">;</span>
+
+python <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/tools/find_protoc.py&quot;</span> -I <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/proto&quot;</span> -I <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/pb_extension&quot;</span> <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/proto/&quot;</span>*.proto -o <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/sample.pb&quot;</span> <span class="p">;</span>
+
+python <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/xrescode-gen.py&quot;</span> -i <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template&quot;</span> -p <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/sample.pb&quot;</span> -o <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/sample/pbcs&quot;</span>   <span class="se">\</span>
+    -g <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/ConfigSet.cs.mako&quot;</span>                                                                           <span class="se">\</span>
+    -l <span class="s2">&quot;</span><span class="nv">$REPO_DIR</span><span class="s2">/template/ConfigSetManager.cs.mako&quot;</span>                                                                    <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">ConfigSetManager</span></code> 访问数据.</p></li>
+</ol>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">excel</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">Program</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ConfigSetManager</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Reload</span><span class="p">();</span>
+        <span class="c1">// 当前C#数据集全部生成的单例类.</span>
+        <span class="c1">// 如果后续有需要再添加ConfigGroup管理等功能.</span>
+        <span class="kt">var</span> <span class="n">table</span> <span class="p">=</span> <span class="n">config_set_role_upgrade_cfg</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">GetByIdLevel</span><span class="p">(</span><span class="m">10001</span><span class="p">,</span> <span class="m">3</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">table</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">table</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2>自定义模板和更多语言<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<p>我们实现的所有加载代码模板都位于 <a class="reference external" href="https://github.com/xresloader/xres-code-generator/tree/master/template">xres-code-generator/template</a> ，以后会实现更多语言的加载模板。用户也可以根据自己的需要，参照 <a class="reference external" href="https://github.com/xresloader/xres-code-generator/tree/master/template">xres-code-generator/template</a> 实现自己的代码加载模板。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data_types.html" class="btn btn-neutral float-left" title="数据类型说明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="advance_usage.html" class="btn btn-neutral float-right" title="高级功能" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2022, xresloader.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
