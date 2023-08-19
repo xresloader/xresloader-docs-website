@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数据输出和数据加载 &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="批量转表工具" href="xresconv.html" />
+    <link rel="prev" title="协议-&gt;Excel数据映射和支持的配置读取源 （scheme）" href="data_mapping.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">数据输出和数据加载</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">输出类型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#output-format-export-binary">导出为协议二进制数据 (推荐)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jsonxmllua">导出为json、xml、lua代码等文本数据 (可选)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#msgpack">导出为Msgpack打包的二进制数据 (可选)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uecsvjson">导出为UE支持的CSV或JSON数据和代码 (可选)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-format-export-enum">导出枚举类型成代码 (可选)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">导出协议描述成代码 (可选)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#proto-v2proto-v3">Proto v2和Proto v3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">数据加载</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xres-code-generator-c-lua-c-upb-lua-ue">方式-1(推荐): （推荐）使用 xres-code-generator 生成解析代码(C++/Lua/C#/Upb Lua/UE蓝图)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c">方式-2(可选): 使用C++加载二进制数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lua-pbc">方式-3(可选): 使用lua-pbc加载二进制数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-dynamicmessage-net">方式-4(可选): 使用C#和DynamicMessage-net加载二进制数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">方式-5(可选): 加载msgpack文本数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-jsjavascript">方式-6(可选): 使用node.js加载javascript文本数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lua">方式-7(可选): 使用lua加载导出的枚举类型</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_types.html">数据类型说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">数据输出和数据加载</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/users/output_format.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>数据输出和数据加载<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>所有输出的数据的结构都是按照 <a class="reference external" href="https://github.com/xresloader/xresloader-protocol/blob/main/core/pb_header_v3.proto">https://github.com/xresloader/xresloader-protocol/blob/main/core/pb_header_v3.proto</a> 的 <code class="docutils literal notranslate"><span class="pre">xresloader_datablocks</span></code> 的结构。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; 转表功能和二进制数据读取的示例： https://github.com/xresloader/xresloader/tree/main/sample
+&gt; 文本和Msgpack数据读取示例： https://github.com/xresloader/xresloader/tree/main/loader-binding
+</pre></div>
+</div>
+<section id="id2">
+<h2>输出类型<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>在 <a class="reference internal" href="xresloader_core.html"><span class="doc">转表引擎-xresloader</span></a> 里可以看到，转表工具可以把Excel数据源导出成多种输出。下面列举重要的几种，项目可以根据自己的情况选择一种或几种导出方式。比如如果做Web端的GM工具，可以使用导出成xml或者javascript代码。</p>
+<section id="output-format-export-binary">
+<span id="id3"></span><h3>导出为协议二进制数据 (推荐)<a class="headerlink" href="#output-format-export-binary" title="此标题的永久链接"></a></h3>
+<p>对应 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">bin</span></code> 。这是推荐的转出方式，导出的是 <code class="docutils literal notranslate"><span class="pre">xresloader_datablocks</span></code> 打包后的二进制数据，文件占用最小。任何支持protobuf的语言和开发环境都可以读取。</p>
+<p>其中每个 <code class="docutils literal notranslate"><span class="pre">data_block</span></code> 数据块都对应Excel里的一行数据，里面的数据格式是用户指定的协议打包成二进制后的数据。</p>
+</section>
+<section id="jsonxmllua">
+<span id="output-format-export-text"></span><h3>导出为json、xml、lua代码等文本数据 (可选)<a class="headerlink" href="#jsonxmllua" title="此标题的永久链接"></a></h3>
+<p>对应 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">json</span></code> 、  <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">xml</span></code> 、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">lua</span></code>  、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">js</span></code> 。 输出的格式也是header+数据body的形式。</p>
+<p>Json的数据格式是:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(数字)数据条目数量&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;xres_ver&quot;</span><span class="p">:</span><span class="s2">&quot;xresloader版本号&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;hash_code&quot;</span><span class="p">:</span><span class="s2">&quot;文本输出无hash码&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data_ver&quot;</span><span class="p">:</span><span class="s2">&quot;数据版本号&quot;</span>
+<span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;协议名&quot;</span><span class="p">:[</span>
+<span class="w">            </span><span class="p">{</span><span class="nt">&quot;Excel数据Key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Excel数据内容&quot;</span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="nt">&quot;每行一条&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;数据内容...&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;协议名&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Xml的数据格式是:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;root&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!--this file is generated by xresloader, please don&#39;t edit it.--&gt;</span>
+<span class="w">  </span><span class="nt">&lt;header&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xres_ver&gt;</span>xresloader版本号<span class="nt">&lt;/xres_ver&gt;</span>
+<span class="w">    </span><span class="nt">&lt;hash_code&gt;</span>文本输出无hash码<span class="nt">&lt;/hash_code&gt;</span>
+<span class="w">    </span><span class="nt">&lt;data_ver&gt;</span>数据版本号<span class="nt">&lt;/data_ver&gt;</span>
+<span class="w">    </span><span class="nt">&lt;count&gt;</span>数据条目数量<span class="nt">&lt;/count&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/header&gt;</span>
+<span class="w">  </span><span class="nt">&lt;body&gt;</span>
+<span class="w">    </span><span class="nt">&lt;协议名&gt;</span>每行一条，数据内容
+<span class="w">      </span><span class="nt">&lt;Excel数据Key&gt;</span>Excel数据内容<span class="nt">&lt;/Excel数据Key&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/协议名&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/body&gt;</span>
+<span class="w">  </span><span class="nt">&lt;data_message_type&gt;</span>协议名<span class="nt">&lt;/data_message_type&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</pre></div>
+</div>
+<p>Lua和Javacript的输出方式和输出设置有关，也很容易看懂，这里就不全部列举了。只列举一个Lua的其中一种输出方式:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- this file is generated by xresloader, please don&#39;t edit it.</span>
+
+<span class="kr">return</span> <span class="p">{</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">xres_ver</span>    <span class="o">=</span> <span class="s2">&quot;xresloader版本号&quot;</span><span class="p">,</span>
+        <span class="n">hash_code</span>   <span class="o">=</span> <span class="s2">&quot;文本输出无hash码&quot;</span><span class="p">,</span>
+        <span class="n">data_ver</span>    <span class="o">=</span> <span class="s2">&quot;数据版本号&quot;</span><span class="p">,</span>
+        <span class="n">count</span>        <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">-- 数据条目数量,</span>
+    <span class="p">},</span>
+    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;协议名&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;协议名&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span> <span class="p">[</span><span class="s2">&quot;Excel数据Key&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Excel数据内容&quot;</span> <span class="p">},</span> <span class="c1">-- 每行一条，数据内容</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>默认情况，文本数据的输出是紧缩的。就没有上面格式列举出的看起来美观，可以通过 <code class="docutils literal notranslate"><span class="pre">--pretty</span> <span class="pre">缩进数量</span></code> 来设置格式化输出。</p>
+</section>
+<section id="msgpack">
+<span id="output-format-export-msgpack"></span><h3>导出为Msgpack打包的二进制数据 (可选)<a class="headerlink" href="#msgpack" title="此标题的永久链接"></a></h3>
+<p>对应 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">msgpack</span></code> 。 如果不希望引入复杂的加载库，又希望打包出的数据是紧缩的二进制数据。我们提供了打包成msgpack格式的选项。
+读取msgpack的工具和库很多，并且效率也很高，语言支持很很好。数据输出结构是：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
+<span class="w">    </span>header<span class="w"> </span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span>xres_ver:<span class="w"> </span><span class="s2">&quot;版本号字符串&quot;</span>,
+<span class="w">        </span>data_ver:<span class="w"> </span><span class="s2">&quot;版本号字符串&quot;</span>,
+<span class="w">        </span>count:<span class="w"> </span>配置记录个数,
+<span class="w">        </span>hash_code:<span class="w"> </span><span class="s2">&quot;hash算法:hash值&quot;</span>,
+<span class="w">    </span><span class="o">}</span>
+<span class="w">    </span>data_block:<span class="w"> </span><span class="o">[</span>
+<span class="w">        </span><span class="o">{</span>配置内容<span class="o">}</span>,
+<span class="w">        </span><span class="o">{</span>配置内容<span class="o">}</span>,
+<span class="w">        </span><span class="o">{</span>配置内容<span class="o">}</span>,
+<span class="w">    </span><span class="o">]</span>,
+<span class="w">    </span>data_message_type:<span class="w"> </span><span class="s2">&quot;协议名&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>使用Msgpack的话， <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack">https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack</a> 里有python2和node.js的读取示例。</p>
+</section>
+<section id="uecsvjson">
+<span id="output-format-export-ue"></span><h3>导出为UE支持的CSV或JSON数据和代码 (可选)<a class="headerlink" href="#uecsvjson" title="此标题的永久链接"></a></h3>
+<p>xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数据，使用 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">ue-csv</span></code>  或 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">ue-json</span></code> 可以指定导出的UE支持的数据格式内容。</p>
+<p>导出UE数据后，我们还会导出对应加载数据的UE C++类代码，具体可用的控制选项参见 <a class="reference internal" href="data_mapping.html#data-mapping-available-options"><span class="std std-ref">可用的配置项</span></a> 。</p>
+<p>输出的代码有两种模型，一种是扁平模型，会把所有热  <strong>repeated</strong> 字段和 <strong>message</strong> 类型平铺到输出的类里。另一种是保留原始结构的嵌套模式。
+<a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/csv/Public/Config">xresloader sample ue csv</a> 和 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/json/Public/Config">xresloader sample ue json</a> 中的是两种模式的输出代码，可以很容易看出来两者的差异和相应插件的功能。</p>
+<p>生成完数据后我们在输出目录生成一个 <strong>UnreaImportSettings.json</strong> 文件，用于 <strong>UEEditor-Cmd</strong> 的导入命令。</p>
+<p>比如我们UE安装在环境变量 <code class="docutils literal notranslate"><span class="pre">$UNREAL_ENGINE_ROOT</span></code> 里，工程UE文件位于 <code class="docutils literal notranslate"><span class="pre">$UNREAL_PROJECT_DIR/ShootingGame.uproject</span></code> 。
+然后导出目录是 <code class="docutils literal notranslate"><span class="pre">$XRESLOADER_OUTPUT_DIR</span></code> 那么我们可以通过</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>java<span class="w"> </span>-client<span class="w"> </span>-jar<span class="w"> </span>xresloader.jar<span class="w"> </span>-t<span class="w"> </span>ue-json<span class="w"> </span>-o<span class="w"> </span><span class="nv">$XRESLOADER_OUTPUT_DIR</span><span class="w"> </span>-f<span class="w"> </span>sample-conf/kind.pb<span class="w">            </span><span class="se">\</span>
+<span class="w">    </span>-m<span class="w"> </span><span class="nv">DataSource</span><span class="o">=</span>role_tables.xlsx<span class="p">|</span>upgrade_10001<span class="p">|</span><span class="m">3</span>,1<span class="w"> </span>-m<span class="w"> </span><span class="nv">ProtoName</span><span class="o">=</span>role_upgrade_cfg<span class="w">                      </span><span class="se">\</span>
+<span class="w">    </span>-m<span class="w"> </span><span class="nv">OutputFile</span><span class="o">=</span>RoleUpgradeCfg.json<span class="w"> </span>-m<span class="w"> </span><span class="nv">KeyRow</span><span class="o">=</span><span class="m">2</span><span class="w">                                                       </span><span class="se">\</span>
+<span class="w">    </span>-m<span class="w"> </span>UeCfg-CodeOutput<span class="o">=</span><span class="nv">$UNREAL_PROJECT_DIR</span>/Source/ShooterGame<span class="p">|</span>Public/Config<span class="p">|</span>Private/Config
+</pre></div>
+</div>
+<p>来生成配置和代码。如果结构变化，可能需要重新生成工程编译工程的动态库。最后可以再通过UE的命令行工具重新导入资源(以Win64为例)，如果之前导入过编辑器里回自动检测到然后提示刷新：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$UNREAL_ENGINE_ROOT</span>/Engine/Binaries/Win64/UE4Editor-Cmd.exe<span class="w"> </span><span class="nv">$UNREAL_PROJECT_DIR</span>/ShootingGame.uproject<span class="w">   </span><span class="se">\</span>
+<span class="w">    </span>-run<span class="o">=</span>ImportAssets<span class="w"> </span>-importsettings<span class="o">=</span><span class="nv">$XRESLOADER_OUTPUT_DIR</span>/UnreaImportSettings.json<span class="w">                   </span><span class="se">\</span>
+<span class="w">    </span>-AllowCommandletRendering<span class="w"> </span>-nosourcecontrol
+</pre></div>
+</div>
+<p>然后需要增加蓝图接口获取Helper</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">URoleUpgradeCfgHelper</span><span class="o">*</span><span class="w"> </span><span class="nf">UMyBlueprintFunctionLibrary::GetRoleUpgradeCfg</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">UClass</span><span class="o">*</span><span class="w"> </span><span class="n">clazz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">URoleUpgradeCfgHelper</span><span class="o">::</span><span class="n">StaticClass</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">nullptr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">clazz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">clazz</span><span class="o">-&gt;</span><span class="n">GetDefaultObject</span><span class="o">&lt;</span><span class="n">URoleUpgradeCfgHelper</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>就可以在蓝图中使用了:</p>
+<img alt="../_images/ue-blueprint.png" src="../_images/ue-blueprint.png" />
+<p>如果我们希望在Excel里配置引用UE内的资源文件，可以使用 <code class="docutils literal notranslate"><span class="pre">org.xresloader.ue.ue_type_name</span></code> 插件和 <code class="docutils literal notranslate"><span class="pre">org.xresloader.ue.ue_type_is_class</span></code> 插件。
+前者会把UE的输出代码转为 <code class="docutils literal notranslate"><span class="pre">TSoftObjectPtr&lt;ue_type_name&gt;</span></code> 来指向UE内的资源，后者会把UE的输出代码转为 <code class="docutils literal notranslate"><span class="pre">TSoftClassPtr&lt;ue_type_name&gt;</span></code> 来指向UE内的类型。</p>
+<p>比如我们配置字段:</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">monster_role</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.helper</span><span class="p">)</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;helper&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.msg_description</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;怪物角色表&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int32</span><span class="w">  </span><span class="na">monster_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.key_tag</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">pawn_class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.ue_type_name</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;APawn&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.ue_type_is_class</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_description</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;机器人Pawn类型&quot;</span><span class="w"> </span><span class="p">];</span><span class="w"> </span><span class="c1">// 默认的蓝图类</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>那么我们可以在Excel中配置:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>怪物ID</p></th>
+<th class="head"><p>默认的蓝图类</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>monster_id</p></td>
+<td><p>pawn_class</p></td>
+</tr>
+<tr class="row-odd"><td><p>2001</p></td>
+<td><p>Blueprint’/Game/Blueprints/Pawns/BotPawnDemo.BotPawnDemo_C’</p></td>
+</tr>
+<tr class="row-even"><td><p>2002</p></td>
+<td><p>Blueprint’/Game/Blueprints/Pawns/BotPawnDemo_range.BotPawnDemo_range_C’</p></td>
+</tr>
+<tr class="row-odd"><td><p>2003</p></td>
+<td><p>Blueprint’/Game/Blueprints/Pawns/BotPawn_Melee.BotPawn_Melee_C’</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="output-format-export-enum">
+<span id="id4"></span><h3>导出枚举类型成代码 (可选)<a class="headerlink" href="#output-format-export-enum" title="此标题的永久链接"></a></h3>
+<p>对应 <code class="docutils literal notranslate"><span class="pre">-c</span></code> 然后可以使用 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">json</span></code> 、  <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">xml</span></code> 、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">lua</span></code>  、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">js</span></code>  、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">ue-csv</span></code>  、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">ue-json</span></code> 来指定按哪种方式输出枚举量。</p>
+<p id="output-format-export-enum-or-options-of-proto-file">比如把protobuf协议里的枚举输出成Lua代码，<code class="docutils literal notranslate"><span class="pre">kind.proto</span></code> 文件：</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="s">&quot;xresloader.proto&quot;</span><span class="p">;</span>
+
+<span class="c1">// 常量类型</span>
+<span class="kd">enum</span><span class="w"> </span><span class="n">game_const_config</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="na">allow_alias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_UNKNOWN</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_PERCENT_BASE</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_RANDOM_RANGE_UNIT</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_RESOURCE_MAX_LIMIT</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">9999999</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_LEVEL_LIMIT</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">999</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_SOLDIER_TYPE_MASK</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_ACTIVITY_TYPE_MASK</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_FORMULAR_TYPE_MASK</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="na">EN_GCC_SCREEN_WIDTH</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">1136</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_SCREEN_HEIGHT</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">640</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_GCC_CAMERA_OFFSET</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">268</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="c1">// 货币类型</span>
+<span class="kd">enum</span><span class="w"> </span><span class="n">cost_type</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">EN_CT_UNKNOWN</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_CT_MONEY</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="mi">10001</span><span class="w"> </span><span class="p">[(</span><span class="n">org.xresloader.enum_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;金币&quot;</span><span class="p">];</span>
+<span class="w">    </span><span class="na">EN_CT_DIAMOND</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="mi">10101</span><span class="w"> </span><span class="p">[(</span><span class="n">org.xresloader.enum_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;钻石&quot;</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">// 这个message用于示例下面导出协议描述，对导出枚举数据无意义</span>
+<span class="kd">message</span><span class="w"> </span><span class="nc">role_upgrade_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.helper</span><span class="p">)</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;helper&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.msg_description</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Test role_upgrade_cfg with multi keys&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">uint32</span><span class="w"> </span><span class="na">Id</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.key_tag</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w"> </span><span class="na">Level</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.key_tag</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w"> </span><span class="na">CostType</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.validator</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cost_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_description</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Refer to cost_type&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w">  </span><span class="na">CostValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w">  </span><span class="na">ScoreAdd</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Lua目标代码（标准形式）:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- this file is generated by xresloader, please don&#39;t edit it.</span>
+<span class="kd">local</span> <span class="n">const_res</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="n">game_const_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">EN_GCC_SCREEN_WIDTH</span> <span class="o">=</span> <span class="mi">1136</span><span class="p">,</span>
+    <span class="n">EN_GCC_SCREEN_HEIGHT</span> <span class="o">=</span> <span class="mi">640</span><span class="p">,</span>
+    <span class="n">EN_GCC_UNKNOWN</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">EN_GCC_CAMERA_OFFSET</span> <span class="o">=</span> <span class="mi">268</span><span class="p">,</span>
+    <span class="n">EN_GCC_FORMULAR_TYPE_MASK</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">EN_GCC_LEVEL_LIMIT</span> <span class="o">=</span> <span class="mi">999</span><span class="p">,</span>
+    <span class="n">EN_GCC_RESOURCE_MAX_LIMIT</span> <span class="o">=</span> <span class="mi">9999999</span><span class="p">,</span>
+    <span class="n">EN_GCC_SOLDIER_TYPE_MASK</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">EN_GCC_PERCENT_BASE</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+    <span class="n">EN_GCC_RANDOM_RANGE_UNIT</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">EN_GCC_ACTIVITY_TYPE_MASK</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="n">cost_type</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">EN_CT_DIAMOND</span> <span class="o">=</span> <span class="mi">10101</span><span class="p">,</span>
+    <span class="n">EN_CT_MONEY</span> <span class="o">=</span> <span class="mi">10001</span><span class="p">,</span>
+    <span class="n">EN_CT_UNKNOWN</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="kr">return</span> <span class="n">const_res</span>
+</pre></div>
+</div>
+<p>对于一些特殊的Lua环境（比如Unity中）可能希望按Lua 5.1的方式加载模块，那么我们也可以使用特殊选项来更换导出方式，比如使用 <code class="docutils literal notranslate"><span class="pre">--lua-module</span> <span class="pre">ProtoEnums.Kind</span></code> 后输出如下:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">module</span><span class="p">(</span><span class="s2">&quot;ProtoEnums.Kind&quot;</span><span class="p">,</span> <span class="n">package</span><span class="p">.</span><span class="n">seeall</span><span class="p">)</span>
+<span class="c1">-- this file is generated by xresloader, please don&#39;t edit it.</span>
+
+<span class="kd">local</span> <span class="n">const_res</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="n">game_const_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">EN_GCC_SCREEN_WIDTH</span> <span class="o">=</span> <span class="mi">1136</span><span class="p">,</span>
+    <span class="n">EN_GCC_SCREEN_HEIGHT</span> <span class="o">=</span> <span class="mi">640</span><span class="p">,</span>
+    <span class="n">EN_GCC_UNKNOWN</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">EN_GCC_CAMERA_OFFSET</span> <span class="o">=</span> <span class="mi">268</span><span class="p">,</span>
+    <span class="n">EN_GCC_FORMULAR_TYPE_MASK</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">EN_GCC_LEVEL_LIMIT</span> <span class="o">=</span> <span class="mi">999</span><span class="p">,</span>
+    <span class="n">EN_GCC_RESOURCE_MAX_LIMIT</span> <span class="o">=</span> <span class="mi">9999999</span><span class="p">,</span>
+    <span class="n">EN_GCC_SOLDIER_TYPE_MASK</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">EN_GCC_PERCENT_BASE</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+    <span class="n">EN_GCC_RANDOM_RANGE_UNIT</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">EN_GCC_ACTIVITY_TYPE_MASK</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="n">cost_type</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">EN_CT_DIAMOND</span> <span class="o">=</span> <span class="mi">10101</span><span class="p">,</span>
+    <span class="n">EN_CT_MONEY</span> <span class="o">=</span> <span class="mi">10001</span><span class="p">,</span>
+    <span class="n">EN_CT_UNKNOWN</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="n">game_const_config</span> <span class="o">=</span> <span class="n">const_res</span><span class="p">.</span><span class="n">game_const_config</span>
+<span class="n">cost_type</span> <span class="o">=</span> <span class="n">const_res</span><span class="p">.</span><span class="n">cost_type</span>
+</pre></div>
+</div>
+<p>于导出的代码，可以通过 <code class="docutils literal notranslate"><span class="pre">--pretty</span> <span class="pre">缩进数量</span></code> 来设置格式化输出，上面的输出使用的都是 <code class="docutils literal notranslate"><span class="pre">--pretty</span> <span class="pre">2</span></code> 。</p>
+<p>其他语言和格式导出选项也类似上面的Lua的结构，具体请参考输出的文件内容加载。</p>
+</section>
+<section id="id5">
+<h3>导出协议描述成代码 (可选)<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>对应 <code class="docutils literal notranslate"><span class="pre">-i</span></code> 然后可以使用 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">json</span></code> 、  <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">xml</span></code> 、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">lua</span></code>  、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">js</span></code>  、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">ue-csv</span></code>  、 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">ue-json</span></code> 来指定按哪种方式输出枚举量。
+比如把上述protobuf协议里的描述输出成Lua代码，协议文件见 <a class="reference internal" href="#output-format-export-enum-or-options-of-proto-file"><span class="std std-ref">kind.proto</span></a></p>
+<p>Lua目标代码（标准形式）:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- this file is generated by xresloader, please don&#39;t edit it.</span>
+
+<span class="kd">local</span> <span class="n">const_res</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span>
+      <span class="n">enum_type</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">cost_type</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;cost_type&quot;</span><span class="p">,</span>
+          <span class="n">value</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">EN_CT_DIAMOND</span> <span class="o">=</span> <span class="p">{</span>
+              <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;EN_CT_DIAMOND&quot;</span><span class="p">,</span>
+              <span class="n">number</span> <span class="o">=</span> <span class="mi">10101</span><span class="p">,</span>
+              <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">enum_alias</span> <span class="o">=</span> <span class="s2">&quot;钻石&quot;</span><span class="p">,</span>
+              <span class="p">},</span>
+            <span class="p">},</span>
+            <span class="n">EN_CT_MONEY</span> <span class="o">=</span> <span class="p">{</span>
+              <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;EN_CT_MONEY&quot;</span><span class="p">,</span>
+              <span class="n">number</span> <span class="o">=</span> <span class="mi">10001</span><span class="p">,</span>
+              <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">enum_alias</span> <span class="o">=</span> <span class="s2">&quot;金币&quot;</span><span class="p">,</span>
+              <span class="p">},</span>
+            <span class="p">},</span>
+          <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="n">game_const_config</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;game_const_config&quot;</span><span class="p">,</span>
+          <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">allow_alias</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="p">},</span>
+        <span class="p">},</span>
+      <span class="p">},</span>
+      <span class="n">message_type</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">role_upgrade_cfg</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="n">field</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">CostType</span> <span class="o">=</span> <span class="p">{</span>
+              <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;CostType&quot;</span><span class="p">,</span>
+              <span class="n">number</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+              <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">field_description</span> <span class="o">=</span> <span class="s2">&quot;Refer to cost_type&quot;</span><span class="p">,</span>
+                <span class="n">validator</span> <span class="o">=</span> <span class="s2">&quot;cost_type&quot;</span><span class="p">,</span>
+              <span class="p">},</span>
+              <span class="n">type_name</span> <span class="o">=</span> <span class="s2">&quot;UINT32&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">Id</span> <span class="o">=</span> <span class="p">{</span>
+              <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Id&quot;</span><span class="p">,</span>
+              <span class="n">number</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key_tag</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+              <span class="p">},</span>
+              <span class="n">type_name</span> <span class="o">=</span> <span class="s2">&quot;UINT32&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">Level</span> <span class="o">=</span> <span class="p">{</span>
+              <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Level&quot;</span><span class="p">,</span>
+              <span class="n">number</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+              <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key_tag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="p">},</span>
+              <span class="n">type_name</span> <span class="o">=</span> <span class="s2">&quot;UINT32&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+          <span class="p">},</span>
+          <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;role_upgrade_cfg&quot;</span><span class="p">,</span>
+          <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">helper</span> <span class="o">=</span> <span class="s2">&quot;helper&quot;</span><span class="p">,</span>
+            <span class="n">msg_description</span> <span class="o">=</span> <span class="s2">&quot;Test role_upgrade_cfg with multi keys&quot;</span><span class="p">,</span>
+          <span class="p">},</span>
+        <span class="p">},</span>
+      <span class="p">},</span>
+      <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;kind.proto&quot;</span><span class="p">,</span>
+      <span class="n">package</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;kind.proto&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="kr">return</span> <span class="n">const_res</span>
+</pre></div>
+</div>
+<p>同样,对于一些特殊的Lua环境（比如Unity中）可能希望按Lua 5.1的方式加载模块，那么我们也可以使用特殊选项来更换导出方式，比如使用 <code class="docutils literal notranslate"><span class="pre">--lua-module</span> <span class="pre">ProtoOptions.Kind</span></code> 。
+输出的代码或文本同样可以通过 <code class="docutils literal notranslate"><span class="pre">--pretty</span> <span class="pre">缩进数量</span></code> 来设置格式化输出，上面的输出使用的都是 <code class="docutils literal notranslate"><span class="pre">--pretty</span> <span class="pre">2</span></code> 。
+<a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a>  中的 <code class="docutils literal notranslate"><span class="pre">proto_v3/kind_option.js</span></code> , <code class="docutils literal notranslate"><span class="pre">proto_v3/kind_option.lua</span></code> , <code class="docutils literal notranslate"><span class="pre">proto_v3/kind_option.mod.lua</span></code> 或 中的 <code class="docutils literal notranslate"><span class="pre">proto_v2/kind_option.js</span></code> , <code class="docutils literal notranslate"><span class="pre">proto_v2/kind_option.lua</span></code> , <code class="docutils literal notranslate"><span class="pre">proto_v2/kind_option.mod.lua</span></code> 有更多的示例。</p>
+<p>其他语言和格式导出选项也类似上面的Lua的结构，具体请参考输出的文件内容加载。</p>
+</section>
+</section>
+<section id="proto-v2proto-v3">
+<span id="output-format-proto-v2-and-proto-v3"></span><h2>Proto v2和Proto v3<a class="headerlink" href="#proto-v2proto-v3" title="此标题的永久链接"></a></h2>
+<p>转表工具同时支持proto v2和proto v3，但是转出是使用的proto v3模式。而对于proto v2和proto v3仅在数字类型的 <code class="docutils literal notranslate"><span class="pre">repeated</span></code> 字段上有些许区别。</p>
+<p>详见： <a class="reference external" href="https://developers.google.com/protocol-buffers/docs/proto3#specifying-field-rules">https://developers.google.com/protocol-buffers/docs/proto3#specifying-field-rules</a></p>
+<p>简单地说，就是proto v2里数字类型的 <code class="docutils literal notranslate"><span class="pre">repeated</span></code> 字段默认是 <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">packed</span> <span class="pre">=</span> <span class="pre">false</span> <span class="pre">]</span></code> 。打包结构是每个项目一个Key-Value数据对。
+而在proto v3里是 <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">packed</span> <span class="pre">=</span> <span class="pre">false</span> <span class="pre">]</span></code> 。打包结构是Key-Value个数N，而后紧挨着N个Value。
+这可能导致转出的数据无法正常读取。解决方法也很简单，那就是对数字类型的 <code class="docutils literal notranslate"><span class="pre">repeated</span></code> 字段手动指定是否是packed。如：</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">arr_in_arr</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">optional</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">int32</span><span class="w"> </span><span class="na">int_arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="k">packed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">str_arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>或proto v3版本。</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">arr_in_arr</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">int32</span><span class="w"> </span><span class="na">int_arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="k">packed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">str_arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h2>数据加载<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>前面小节我们大致展示了转出数据的结构，以此比较容易理解加载的方式。本小节则是对一些环境和语言的简单加载库。</p>
+<section id="xres-code-generator-c-lua-c-upb-lua-ue">
+<h3>方式-1(推荐): （推荐）使用 <a class="reference external" href="https://github.com/xresloader/xres-code-generator">xres-code-generator</a> 生成解析代码(C++/Lua/C#/Upb Lua/UE蓝图)<a class="headerlink" href="#xres-code-generator-c-lua-c-upb-lua-ue" title="此标题的永久链接"></a></h3>
+<p>对于C++、Lua和C#，我们推荐使用 <a class="reference external" href="https://github.com/xresloader/xres-code-generator">xres-code-generator</a> 生成解析代码。（未来会开发更多的语言支持）。</p>
+<p><a class="reference external" href="https://github.com/xresloader/xres-code-generator">xres-code-generator</a> 也支持先输出C++接口，再通过 <code class="docutils literal notranslate"><span class="pre">template/UE*</span></code> 的UE模板来生成蓝图支持的Wrapper接口。通过这种方式加载数据支持多版本并存和支持复杂的多级索引和多个索引。</p>
+<p>详见： <a class="reference internal" href="xres_code_generator.html#id2"><span class="std std-ref">使用 xres-code-generator 生成解析代码</span></a> 。</p>
+</section>
+<section id="c">
+<h3>方式-2(可选): 使用C++加载二进制数据<a class="headerlink" href="#c" title="此标题的永久链接"></a></h3>
+<p>此加载方式需要上面的 <a class="reference internal" href="#output-format-export-binary"><span class="std std-ref">导出为协议二进制数据 (推荐)</span></a></p>
+<p>在 <a class="reference internal" href="quick_start.html#quick-start-load-with-libresloader"><span class="std std-ref">快速上手-方式.1: 使用读取库解析</span></a> 里我们已经给出了这种加载方式的具体使用，这里不再复述。
+这里提供的方式也支持protobuf的lite模式。</p>
+</section>
+<section id="lua-pbc">
+<h3>方式-3(可选): 使用lua-pbc加载二进制数据<a class="headerlink" href="#lua-pbc" title="此标题的永久链接"></a></h3>
+<p>此加载方式需要上面的 <a class="reference internal" href="#output-format-export-binary"><span class="std std-ref">导出为协议二进制数据 (推荐)</span></a></p>
+<p>对于一些中使用lua的项目，也可以选择使用 <a class="reference external" href="protobuf-lite">pbc</a> 来加载数据。
+我们在 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/loader-binding/pbc">https://github.com/xresloader/xresloader/tree/main/loader-binding/pbc</a> 有使用pbc进行加载的manager封装。
+在 <a class="reference external" href="https://github.com/owent-utils/lua/tree/master/src/data">https://github.com/owent-utils/lua/tree/master/src/data</a> 里有对多项数据集的封装。这两部分都依赖 <a class="reference external" href="https://github.com/owent-utils/lua">https://github.com/owent-utils/lua</a> 仓库里提供的utility层。</p>
+<p>简要的加载代码如下:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 加载lua加载器</span>
+<span class="kd">local</span> <span class="n">class</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;utils.class&#39;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">loader</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;utils.loader&#39;</span><span class="p">)</span>
+
+<span class="c1">-- 必须保证pbc已经载入</span>
+<span class="kd">local</span> <span class="n">pbc</span> <span class="o">=</span> <span class="n">protobuf</span>
+<span class="n">pbc</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="nb">io.open</span><span class="p">(</span><span class="s1">&#39;pb_header.pb&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">):</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>   <span class="c1">-- 注册转表头描述文件</span>
+<span class="n">pbc</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="nb">io.open</span><span class="p">(</span><span class="s1">&#39;用户协议.pb&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">):</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>    <span class="c1">-- 注册转表协议描述文件</span>
+
+<span class="kd">local</span> <span class="n">cfg</span> <span class="o">=</span> <span class="n">loader</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;data.pbc_config_data_set&#39;</span><span class="p">)</span>
+
+<span class="c1">-- 设置路径规则 (一定要带一个%s)</span>
+<span class="c1">-- 当读取协议message类型为PROTO的配置时，实际查找的协议名称为string.format(rule, PROTO)</span>
+<span class="c1">-- 比如protobuf的package名称是config,那么这里rule填 config.%s</span>
+<span class="n">cfg</span><span class="p">:</span><span class="n">set_path_rule</span><span class="p">(</span><span class="s1">&#39;%s&#39;</span><span class="p">)</span>
+
+<span class="c1">-- 设置配置列表加载文件</span>
+<span class="c1">-- cfg:set_list(&#39;data.conf_list&#39;) -- cfg:reload() 会在清空配置数据后执行require(&#39;data.conf_list&#39;)</span>
+</pre></div>
+</div>
+<p>简要的配置清单代码（ <code class="docutils literal notranslate"><span class="pre">data/conf_list.lua</span></code> ）如下:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">class</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;utils.class&#39;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">loader</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;utils.loader&#39;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">cfg</span> <span class="o">=</span> <span class="n">loader</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;data.pbc_config_data_set&#39;</span><span class="p">)</span>
+
+<span class="c1">-- role_cfg, 第二个参数是个函数，返回key，这样读入的数据可以按key-value模式组织起来</span>
+<span class="n">cfg</span><span class="p">:</span><span class="n">load_buffer_kv</span><span class="p">(</span><span class="s1">&#39;role_cfg&#39;</span><span class="p">,</span> <span class="nb">io.open</span><span class="p">(</span><span class="s1">&#39;role_cfg.bin&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">):</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="kr">function</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">v</span><span class="p">.</span><span class="n">id</span> <span class="ow">or</span> <span class="n">k</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="c1">-- 第三个参数是个别名</span>
+<span class="n">cfg</span><span class="p">:</span><span class="n">load_buffer_kv</span><span class="p">(</span><span class="s1">&#39;role_cfg&#39;</span><span class="p">,</span> <span class="nb">io.open</span><span class="p">(</span><span class="s1">&#39;role_cfg.bin&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">):</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="kr">function</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">v</span><span class="p">.</span><span class="n">id</span> <span class="ow">or</span> <span class="n">k</span>
+<span class="kr">end</span><span class="p">,</span> <span class="s1">&#39;alias_name&#39;</span><span class="p">)</span>
+
+<span class="c1">-- 这后面的时读取，不是加载</span>
+<span class="c1">-- 别名和非别名的数据一样的</span>
+<span class="n">vardump</span><span class="p">(</span><span class="n">cfg</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;role_cfg&#39;</span><span class="p">):</span><span class="n">get</span><span class="p">(</span><span class="mi">10002</span><span class="p">))</span>     <span class="c1">-- dump id=10002的role_cfg表的数据</span>
+<span class="n">vardump</span><span class="p">(</span><span class="n">cfg</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;alias_name&#39;</span><span class="p">):</span><span class="n">get</span><span class="p">(</span><span class="mi">10002</span><span class="p">))</span>   <span class="c1">-- dump id=10002的role_cfg表的数据</span>
+
+<span class="c1">-- 直接读取里面的字段</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;kind id=%d, name=%s, dep_test.name=%s&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">kind</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">kind</span><span class="p">.</span><span class="n">dep_test</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">proto v3请注意: pbc不支持[packed=true]属性。在proto v3中，所有的repeated整数都默认是[packed=true]，要使用pbc解码请注意这些field要显示申明为[packed=false]</div>
+<div class="line">或者使用我修改过的 <a class="reference external" href="https://github.com/owent-contrib/pbc/tree/proto_v3">pbc的proto_v3分支</a> 。</div>
+<div class="line"><br /></div>
+<div class="line">主要接口注册形式</div>
+<div class="line">pbc_config_manager:load_buffer_kv(协议名, 二进制, function(序号, 转出的lua table) return key的值 end, 别名) – 读取key-value型数据接口</div>
+<div class="line">pbc_config_manager:load_buffer_kl(协议名, 二进制, function(序号, 转出的lua table) return key的值 end, 别名) – 读取key-list型数据接口</div>
+</div>
+</section>
+<section id="c-dynamicmessage-net">
+<h3>方式-4(可选): 使用C#和DynamicMessage-net加载二进制数据<a class="headerlink" href="#c-dynamicmessage-net" title="此标题的永久链接"></a></h3>
+<p>此加载方式需要上面的 <a class="reference internal" href="#output-format-export-binary"><span class="std std-ref">导出为协议二进制数据 (推荐)</span></a></p>
+<p>为了方便Unity能够不依赖反射动态获取类型和读取配置，我们提供了 <a class="reference external" href="https://github.com/xresloader/DynamicMessage-net">DynamicMessage-net</a> 项目。
+这个项目依赖 <a class="reference external" href="https://github.com/mgravell/protobuf-net">protobuf-net</a> 的底层。 详见项目主页: <a class="reference external" href="https://github.com/xresloader/DynamicMessage-net">https://github.com/xresloader/DynamicMessage-net</a></p>
+</section>
+<section id="id7">
+<h3>方式-5(可选): 加载msgpack文本数据<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>此加载方式需要上面的 <a class="reference internal" href="#output-format-export-msgpack"><span class="std std-ref">导出为Msgpack打包的二进制数据 (可选)</span></a></p>
+<p>Msgpack的支持库语言和库很多，我们就不依依列举了。我们有一些python和node.js上的简单示例可以参见 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack">https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack</a> 。</p>
+</section>
+<section id="node-jsjavascript">
+<h3>方式-6(可选): 使用node.js加载javascript文本数据<a class="headerlink" href="#node-jsjavascript" title="此标题的永久链接"></a></h3>
+<p>此加载方式需要上面的 <a class="reference internal" href="#output-format-export-text"><span class="std std-ref">导出为json、xml、lua代码等文本数据 (可选)</span></a></p>
+<p>把配置输出javascript代码的时候，我们支持Node.js模式和AMD模式。</p>
+<p>比如，<a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 中导出的 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/role_cfg.n.js">role_cfg.n.js</a> 。我们可以通过以下代码加载：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">role_cfg_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./role_cfg.n&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">role_cfg_header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">role_cfg_block</span><span class="p">.</span><span class="nx">role_cfg_header</span><span class="p">;</span><span class="w"> </span><span class="c1">// 数据头信息，header</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">role_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">role_cfg_block</span><span class="p">.</span><span class="nx">role_cfg</span><span class="p">;</span><span class="w">               </span><span class="c1">// 数据集合，Ayyar类型</span>
+
+<span class="c1">// 读取数据</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`we got </span><span class="si">${</span><span class="nx">role_cfg_header</span><span class="p">.</span><span class="nx">count</span><span class="si">}</span><span class="sb"> rows, data version: </span><span class="si">${</span><span class="nx">role_cfg_header</span><span class="p">.</span><span class="nx">data_ver</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nx">role_cfg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">role_cfg</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">id</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">10001</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;================= print data with id = 10001 =================&#39;</span><span class="p">);</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">role_cfg</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>详见： <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/loader-binding/javascript">https://github.com/xresloader/xresloader/tree/main/loader-binding/javascript</a></p>
+</section>
+<section id="lua">
+<h3>方式-7(可选): 使用lua加载导出的枚举类型<a class="headerlink" href="#lua" title="此标题的永久链接"></a></h3>
+<p>上面 <a class="reference internal" href="#output-format-export-enum"><span class="std std-ref">导出枚举类型成代码 (可选)</span></a> 提到，我们可以把一些枚举类型放在proto文件里统一维护，然后不同的使用者导出成不同目标语言的代码。
+而对于protobuf没有原生支持的语言，我们支持导出 <code class="docutils literal notranslate"><span class="pre">lua</span></code> 、 <code class="docutils literal notranslate"><span class="pre">javascript</span></code> 、 <code class="docutils literal notranslate"><span class="pre">xml</span></code> 或 <code class="docutils literal notranslate"><span class="pre">json</span></code> 辅助我们使用。</p>
+<p>比如上面两种Lua导出，我们可以直接通过Lua脚本加载：</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">const_enum</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">&#39;kind_const&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;game_const_config.EN_GCC_PERCENT_BASE = &#39;</span> <span class="o">..</span> <span class="n">const_enum</span><span class="p">.</span><span class="n">game_const_config</span><span class="p">.</span><span class="n">EN_GCC_PERCENT_BASE</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nf">dump_all_enum</span> <span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="n">ident</span><span class="p">)</span>
+    <span class="kr">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span> <span class="kr">do</span>
+        <span class="kr">if</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">~=</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="s1">&#39;table&#39;</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="kr">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;%s%s = {&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+            <span class="n">dump_all_enum</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ident</span> <span class="o">..</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;%s}&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">))</span>
+        <span class="kr">else</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;%s%s = %s,&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="kr">end</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="n">dump_all_enum</span><span class="p">(</span><span class="n">const_enum</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>让我们再来看看Lua 5.1的module模式的枚举类型加载：</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="nb">require</span><span class="p">(</span><span class="s1">&#39;kind_const_module&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;game_const_config.EN_GCC_PERCENT_BASE = &#39;</span> <span class="o">..</span> <span class="n">ProtoEnums</span><span class="p">.</span><span class="n">Kind</span><span class="p">.</span><span class="n">game_const_config</span><span class="p">.</span><span class="n">EN_GCC_PERCENT_BASE</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nf">dump_all_enum</span> <span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="n">ident</span><span class="p">)</span>
+    <span class="kr">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span> <span class="kr">do</span>
+        <span class="kr">if</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">~=</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="s1">&#39;table&#39;</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="kr">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;%s%s = {&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+            <span class="n">dump_all_enum</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ident</span> <span class="o">..</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;%s}&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">))</span>
+        <span class="kr">else</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;%s%s = %s,&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="kr">end</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="n">dump_all_enum</span><span class="p">(</span><span class="n">ProtoEnums</span><span class="p">.</span><span class="n">Kind</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>其他语言和格式的加载请参考输出文件。</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="data_mapping.html" class="btn btn-neutral float-left" title="协议-&gt;Excel数据映射和支持的配置读取源 （scheme）" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="xresconv.html" class="btn btn-neutral float-right" title="批量转表工具" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, xresloader.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

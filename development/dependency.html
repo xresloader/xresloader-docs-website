@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>环境和依赖项 &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="编译和打包" href="build.html" />
+    <link rel="prev" title="FAQ" href="../users/faq.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../users/download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/data_types.html">数据类型说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">环境和依赖项</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">转表工具- xresloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">命令行批量转表工具- xresconv-cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gui-xresconv-gui">GUI批量转表工具- xresconv-gui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">代码生成工具- xres-code-generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#c-message-dynamicmessage-net">C#的动态Message支持- DynamicMessage-net</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">环境和依赖项</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/dependency.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>环境和依赖项<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2>转表工具- <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a><a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 项目使用[apache maven](<a class="reference external" href="https://maven.apache.org/">https://maven.apache.org/</a>)管理包依赖和打包构建流程。</p></li>
+<li><p>JDK 需要11或以上版本</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>命令行批量转表工具- <a class="reference external" href="https://github.com/xresloader/xresconv-cli">xresconv-cli</a><a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/xresloader/xresconv-cli">xresconv-cli</a> 项目使用 <a class="reference external" href="https://www.python.org/">python</a> 开发。</p></li>
+<li><p>支持python 2.7和python 3</p></li>
+</ul>
+</section>
+<section id="gui-xresconv-gui">
+<h2>GUI批量转表工具- <a class="reference external" href="https://github.com/xresloader/xresconv-gui">xresconv-gui</a><a class="headerlink" href="#gui-xresconv-gui" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/xresloader/xresconv-gui">xresconv-gui</a> 项目使用 <a class="reference external" href="https://nodejs.org/en/">nodejs</a> 和 <a class="reference external" href="https://www.npmjs.com/">npm</a> 做包管理。</p></li>
+<li><p>使用 <a class="reference external" href="https://electronjs.org/">electronjs</a> 实现用户界面</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>代码生成工具- <a class="reference external" href="https://github.com/xresloader/xres-code-generator">xres-code-generator</a><a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/xresloader/xres-code-generator">xres-code-generator</a> 项目使用 <a class="reference external" href="https://www.python.org/">python</a> 开发。</p></li>
+<li><p>支持python 2.7和python 3</p></li>
+<li><p>使用 <a class="reference external" href="https://www.makotemplates.org/">mako</a> 模板引擎</p></li>
+</ul>
+</section>
+<section id="c-message-dynamicmessage-net">
+<h2>C#的动态Message支持- <a class="reference external" href="https://github.com/xresloader/DynamicMessage-net">DynamicMessage-net</a><a class="headerlink" href="#c-message-dynamicmessage-net" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/xresloader/DynamicMessage-net">DynamicMessage-net</a> 项目使用 <a class="reference external" href="https://github.com/dotnet/core">.net core</a> 或 <a class="reference external" href="http://www.microsoft.com/net">.net framework</a> 开发。</p></li>
+<li><p>依赖 <a class="reference external" href="https://github.com/mgravell/protobuf-net">protobuf-net</a> 的解码层</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../users/faq.html" class="btn btn-neutral float-left" title="FAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="build.html" class="btn btn-neutral float-right" title="编译和打包" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, xresloader.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

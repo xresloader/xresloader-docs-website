@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数据类型说明 &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="使用 xres-code-generator 生成解析代码" href="xres_code_generator.html" />
+    <link rel="prev" title="批量转表工具" href="xresconv.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">数据类型说明</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#repeated">数组、repeated和数据结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-types-stable-array">定长数组</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">无符号整数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">日期和时间类型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">数据类型说明</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/users/data_types.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>数据类型说明<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="repeated">
+<h2>数组、repeated和数据结构<a class="headerlink" href="#repeated" title="此标题的永久链接"></a></h2>
+<p>因为Excel配置很多情况下都会留空，所以默认情况下如果Excel里的单元格被删除（空值不算），我们不会转出数据到数组结构中。也就是我们的数组时动态长度的。这样可以最大化压缩掉空值项。
+同样对于optional的字段，空单元格也不会生成数据在二进制结构里。</p>
+<p>比如：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>第一排</p></th>
+<th class="head"><p>第二排</p></th>
+<th class="head"><p>第三排</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>col[0]</p></th>
+<th class="head"><p>col[1]</p></th>
+<th class="head"><p>col[2]</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>123</p></td>
+<td></td>
+<td><p>456</p></td>
+</tr>
+</tbody>
+</table>
+<p>这样转出来的数据 <code class="docutils literal notranslate"><span class="pre">col</span></code> 的数组长度是2，其中： <code class="docutils literal notranslate"><span class="pre">col[0]=123,</span> <span class="pre">col[1]=456</span></code> 。</p>
+</section>
+<section id="data-types-stable-array">
+<span id="id2"></span><h2>定长数组<a class="headerlink" href="#data-types-stable-array" title="此标题的永久链接"></a></h2>
+<p>有些情况我们使用数组来表示位置。比如：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>第一排</p></th>
+<th class="head"><p>第二排</p></th>
+<th class="head"><p>第三排</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>row[0]</p></th>
+<th class="head"><p>row[1]</p></th>
+<th class="head"><p>row[2]</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>123</p></td>
+<td></td>
+<td><p>456</p></td>
+</tr>
+</tbody>
+</table>
+<p>这种情况，我们希望。能够保持结构，即让row[1]转出为0（默认值）。
+这时候 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 提供了一个选项 <code class="docutils literal notranslate"><span class="pre">--enable-empty-list</span></code> 。在转表的时候使用这个选项，这样转出的数据就会是:
+<code class="docutils literal notranslate"><span class="pre">row</span></code> 的数组长度是3，其中 <code class="docutils literal notranslate"><span class="pre">row[0]=123,</span> <span class="pre">row[1]=0,</span> <span class="pre">row[2]=456</span></code> 。</p>
+</section>
+<section id="id3">
+<h2>无符号整数<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>请注意有些语言（比如Java）没有无符号类型，但是协议层支持。转换这种类型的时候请确保Excel里填写的数值不会超出有符号类型的长度。否则可能导致裁剪。
+在转表工具里，整数一律使用Long类型，所以注意即便协议类型是uint64，填写的数据也不要超过int64的范围。</p>
+</section>
+<section id="id4">
+<h2>日期和时间类型<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>如果Excel的单元格的类型设置为日期时间类型则会使用日期时间类型的数据转换规则。</p>
+<p>由于POI内部是使用格式来判定是否是日期时间类型的，所以如果要使用日期时间类型，最好把格式设置成 <code class="docutils literal notranslate"><span class="pre">年-月-日</span> <span class="pre">时:分:秒</span></code> 这种形式。</p>
+<p>Excel里只保存绝对值时间，如果格式设置为 <code class="docutils literal notranslate"><span class="pre">时:分:秒</span></code> 那么 <code class="docutils literal notranslate"><span class="pre">10:11:12</span></code> 转出的时间是 <code class="docutils literal notranslate"><span class="pre">1900-01-01</span> <span class="pre">10:11:12</span></code> 或 <code class="docutils literal notranslate"><span class="pre">1902-01-01</span> <span class="pre">10:11:12</span></code> 。
+但是我们使用的时候很多情况下需要配置一天的某个时间段，为了满足这种需求，我们假设所有的绝对值时间都在1970年以后。那么年份在 <strong>1970年或1970年之前</strong> 的时间，我们都会只取时、分、秒的部分计算时间戳。
+比如上面的 <code class="docutils literal notranslate"><span class="pre">10:11:12</span></code> 会被转成 <code class="docutils literal notranslate"><span class="pre">10*3600+11*60+12=36672</span></code>  。</p>
+<p>如果协议里的类型是字符串，那么时间转换的时候会检查时间格式，如果有“-”，则会按 <code class="docutils literal notranslate"><span class="pre">yyyy-MM-dd</span></code> 转换年月日部分；如果格式里有分号”:”，则会按 <code class="docutils literal notranslate"><span class="pre">HH:mm:ss</span></code> 转换时分秒部分。
+如果两者都有我们会按 <code class="docutils literal notranslate"><span class="pre">yyyy-MM-dd</span> <span class="pre">HH:mm:ss</span></code> 转换年月日时分秒。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="xresconv.html" class="btn btn-neutral float-left" title="批量转表工具" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="xres_code_generator.html" class="btn btn-neutral float-right" title="使用 xres-code-generator 生成解析代码" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, xresloader.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

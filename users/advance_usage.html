@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>高级功能 &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="生态和周边工具" href="ecosystem_and_tools.html" />
+    <link rel="prev" title="使用 xres-code-generator 生成解析代码" href="xres_code_generator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_types.html">数据类型说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">高级功能</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">文本替换（别名/宏）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">多表数据合并</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">数据验证器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#protobuf">Protobuf 插件支持</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#protobuf-message">Protobuf插件 - Message插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#protobuf-field">Protobuf插件 - Field插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#protobuf-enumvalue">Protobuf插件 - EnumValue插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#protobuf-oneof-2-8-0">Protobuf插件 - Oneof插件(2.8.0版本及以上)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">仅导出部分字段</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#include">批量转表的include标签</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">公式支持</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">定长数组</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plain-xresloader-2-7-0">Plain模式（需要 xresloader 2.7.0及以上）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oneof-union-xresloader-2-8-0">Oneof/Union支持（需要 xresloader 2.8.0及以上）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#map-xresloader-2-9-0">Map类型支持（需要 xresloader 2.9.0及以上）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#callbackscript-xresloader-2-13-0">使用 <code class="docutils literal notranslate"><span class="pre">CallbackScript</span></code> 处理数据（需要 xresloader 2.13.0及以上）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#xresloader-2-14-0-rc1">多字段复制（需要 xresloader 2.14.0-rc1及以上）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#excel-xresloader-2-14-0-rc2">剔除Excel误操作带来的空数据行（需要 xresloader 2.14.0-rc2及以上）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#xresloader-2-14-0-rc2">唯一性检测（需要 xresloader 2.14.0-rc2及以上）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#xresloader-2-14-0-rc3">通过自定义验证器在复用验证器规则组合（需要 xresloader 2.14.0-rc3及以上）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">高级功能</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/users/advance_usage.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>高级功能<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2>文本替换（别名/宏）<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>为了便于理解，我们支持配置一组别名的表。在 <code class="docutils literal notranslate"><span class="pre">MacroSource</span></code> 中，主配置为文件名，次配置为表明，补充配置为Key-Value的开始行号和列号。比如：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>简介</p></th>
+<th class="head"><p>主配置</p></th>
+<th class="head"><p>次配置</p></th>
+<th class="head"><p>补充配置</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MacroSource</p></td>
+<td><p>文本宏数据源(文件路径,表名)</p></td>
+<td><p>资源转换示例.xlsx</p></td>
+<td><p>macro</p></td>
+<td><p>2,1</p></td>
+<td><p>次配置为表名，补充配置为数据起始位置(行号, 列号)</p></td>
+</tr>
+</tbody>
+</table>
+<p>这时候我们会认为在文件 <code class="docutils literal notranslate"><span class="pre">资源转换示例.xlsx</span></code> ， <code class="docutils literal notranslate"><span class="pre">macro</span></code> 表中。从第 <code class="docutils literal notranslate"><span class="pre">2</span></code> 行开始，第 <code class="docutils literal notranslate"><span class="pre">1</span></code> 列为别名的Key，第 <code class="docutils literal notranslate"><span class="pre">2</span></code> 列为别名的Value。</p>
+<p>这样我们在执行转表的读取数据时候，会尝试去这里查找是否又它的别名，如果有，则直接转换成Value。</p>
+<p>比如 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 的 <code class="docutils literal notranslate"><span class="pre">upgrade_10001</span></code> 表的 <code class="docutils literal notranslate"><span class="pre">CostType</span></code> 这一列是整数类型，但是我们可以配置成 <code class="docutils literal notranslate"><span class="pre">游戏币</span></code> 。就是因为我们在 <code class="docutils literal notranslate"><span class="pre">macro</span></code> 表中配置了。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>键</p></th>
+<th class="head"><p>值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>游戏币</p></td>
+<td><p>10001</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h2>多表数据合并<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>如果Excel的多个表的结构相同（列对应的字段相同）。则我们可以通过配置多个 <code class="docutils literal notranslate"><span class="pre">DataSource</span></code> 来让 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 对多个表进行数据合并。这样我们可以把数据按类型分布在几个表中并在转换的时候最后合并。</p>
+<p>详见 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 中 <code class="docutils literal notranslate"><span class="pre">资源转换示例.xlsx</span></code> 的 <code class="docutils literal notranslate"><span class="pre">scheme_upgrade</span></code> 、 <code class="docutils literal notranslate"><span class="pre">upgrade_10001</span></code> 和 <code class="docutils literal notranslate"><span class="pre">upgrade_10002</span></code> 表。</p>
+</section>
+<section id="id4">
+<h2>数据验证器<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p><a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 提供了一个基于协议描述得高级功能- <strong>数据验证器</strong> 。用于限制输入数据的范围。
+<strong>数据验证器</strong> 的使用方法是在Excel的字段名后面跟 <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> 符号，然后输入协议名称或者数字范围 <code class="docutils literal notranslate"><span class="pre">A-B</span></code> ，多个验证器可以用 <code class="docutils literal notranslate"><span class="pre">|</span></code> 隔开。
+或者也可以通过协议插件来设置验证器（详见: 下面插件章节）。这样在数据转出的时候转表工具会检查数据的合法性。</p>
+<p>可用的验证器语法如下:</p>
+<ul class="simple">
+<li><p>函数: <code class="docutils literal notranslate"><span class="pre">InText(&quot;文件名&quot;[,</span> <span class="pre">第几个字段[,</span> <span class="pre">\&quot;字段分隔正则表达式\&quot;]])</span></code> : 从文本文件（UTF-8编码）,可以指定读第几个字段和用于字段分隔的正则表达式</p></li>
+<li><p>函数: <code class="docutils literal notranslate"><span class="pre">InTableColumn(&quot;文件名&quot;,</span> <span class="pre">&quot;Sheet名&quot;,</span> <span class="pre">从第几行开始,</span> <span class="pre">从第几列开始)</span></code> : 从Excel数据列读取可用值,指定数据行和数据列</p></li>
+<li><p>函数: <code class="docutils literal notranslate"><span class="pre">InTableColumn(&quot;文件名&quot;,</span> <span class="pre">&quot;Sheet名&quot;,</span> <span class="pre">从第几行开始,</span> <span class="pre">KeyRow,</span> <span class="pre">KeyValue)</span></code> : 从Excel数据列读取可用值,指定数据行并通过某一行的的值获取数据列</p></li>
+<li><p>自定义验证器名（通过 <code class="docutils literal notranslate"><span class="pre">--validator-rules</span></code> 加载）</p></li>
+<li><p>协议类型（对应protobuf的message里的每个field，excel里可以填field number或者field name）</p></li>
+<li><p>枚举类型（对应protobuf的enum里的每个number，excel里可以填enum number或者enum name）</p></li>
+<li><p>值范围: <code class="docutils literal notranslate"><span class="pre">A-B``（比如</span> <span class="pre">``0-1234</span></code> ）或 <code class="docutils literal notranslate"><span class="pre">&gt;=A``（比如</span> <span class="pre">``&gt;=1234</span></code> ）或 <code class="docutils literal notranslate"><span class="pre">&lt;=A``（比如</span> <span class="pre">``&lt;=1234</span></code> ）或 <code class="docutils literal notranslate"><span class="pre">&gt;A``（比如</span> <span class="pre">``&gt;1234</span></code> ）或 <code class="docutils literal notranslate"><span class="pre">&lt;A``（比如</span> <span class="pre">``&lt;1234</span></code> ）</p></li>
+<li><p>多个验证器可以使用“或”符号（“|”)来分隔开， 任意一个验证器满足条件则认为时合法数据(如: 100-200|2000-3000|test_msg_verifier)</p></li>
+</ul>
+<p>自定义验证器的配置格式(YAML):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">validator</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;validator</span><span class="nv"> </span><span class="s">name&quot;</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validator_rule1</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validator_rule2</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>举例如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>角色ID</p></th>
+<th class="head"><p>等级</p></th>
+<th class="head"><p>货币类别</p></th>
+<th class="head"><p>消耗值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Id</p></td>
+<td><p>Level</p></td>
+<td><p>CostType</p></td>
+<td><p><a class="reference external" href="mailto:CostValue&#37;&#52;&#48;0-1000|2000-3000">CostValue<span>&#64;</span>0-1000|2000-3000</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>10001</p></td>
+<td><p>1</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>10001</p></td>
+<td><p>2</p></td>
+<td><p>10001</p></td>
+<td><p>50</p></td>
+</tr>
+</tbody>
+</table>
+<p>上面这个表，如果 <code class="docutils literal notranslate"><span class="pre">消耗值</span></code> 这一列出现了[0, 1000]和[2000-3000]以外的值，转表工具会转表不通过并予以提示。</p>
+<p>还有一个特殊的用法是，比如我们有技能要对单位的属性加成。然后我们定义单位属性的proto如下：</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">unit_attribute</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">hp</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">mp</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">power</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">message</span><span class="w"> </span><span class="nc">skill_effect</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">id</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">level</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">func_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">attr_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">value</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>然后我们可以定义技能功能表如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>技能ID</p></th>
+<th class="head"><p>等级</p></th>
+<th class="head"><p>功能类别</p></th>
+<th class="head"><p>属性</p></th>
+<th class="head"><p>值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>level</p></td>
+<td><p>func_type</p></td>
+<td><p><a class="reference external" href="mailto:attr_type&#37;&#52;&#48;unit_attribute">attr_type<span>&#64;</span>unit_attribute</a></p></td>
+<td><p>value</p></td>
+</tr>
+<tr class="row-odd"><td><p>20001</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>hp</p></td>
+<td><p>100</p></td>
+</tr>
+<tr class="row-even"><td><p>20001</p></td>
+<td><p>2</p></td>
+<td><p>1001</p></td>
+<td><p>hp</p></td>
+<td><p>200</p></td>
+</tr>
+</tbody>
+</table>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">skill_effect</span></code> 转出如上的表， <code class="docutils literal notranslate"><span class="pre">属性</span></code> 这个字段的验证器设为了 <code class="docutils literal notranslate"><span class="pre">unit_attribute</span></code> ，<code class="docutils literal notranslate"><span class="pre">attr_type</span></code> 的类型是int32。
+这时在转出数据的时候，转出的数据是 <code class="docutils literal notranslate"><span class="pre">unit_attribute.hp</span></code> 的字段编号 <code class="docutils literal notranslate"><span class="pre">1</span></code> 。</p>
+</section>
+<section id="protobuf">
+<h2>Protobuf 插件支持<a class="headerlink" href="#protobuf" title="此标题的永久链接"></a></h2>
+<p>项目中可以导入 <a class="reference external" href="https://github.com/xresloader/xresloader-protocol/tree/main/common">xresloader-protocol/common</a> 目录， 然后通过导入 <a class="reference external" href="https://github.com/xresloader/xresloader-protocol/tree/main/core/extensions/v2">xresloader-protocol/core/extensions/v2</a> 或 <a class="reference external" href="https://github.com/xresloader/xresloader-protocol/tree/main/core/extensions/v3">xresloader-protocol/core/extensions/v3</a> 中的相应proto文件，就可以获得额外的插件扩展支持。</p>
+<p>&gt; 注意: 使用插件功能时　生成pb的时候也要导入插件的proto文件和protobuf官方include目录里的 google/protobuf/descriptor.proto 文件。</p>
+<section id="protobuf-message">
+<h3>Protobuf插件 - Message插件<a class="headerlink" href="#protobuf-message" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>插件名称</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>插件功能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>org.xresloader.msg_description</p></td>
+<td><p>string</p></td>
+<td><p>消息体描述信息，会写入输出的header中和代码中</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.msg_require_mapping_all</p></td>
+<td><p>bool</p></td>
+<td><p>设置message的所有字段必须被全部映射</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.msg_separator</p></td>
+<td><p>string</p></td>
+<td><p>Plain模式字段分隔符，可指定多个，用于在一个单元格内配置复杂格式时的分隔符列表，默认值: <code class="docutils literal notranslate"><span class="pre">,;|</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.ue.helper</p></td>
+<td><p>string</p></td>
+<td><p>生成UE Utility代码的类名后缀</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.ue.not_data_table</p></td>
+<td><p>bool</p></td>
+<td><p>生成UE Utility代码时，不生产加载代码，这用于带name字段的依赖类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.ue.default_loader</p></td>
+<td><p>enum</p></td>
+<td><p>生成UE Utility代码时，控制单独的Message是否开启默认Loader（版本&gt;=v2.13.1）
+可选项:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EN_LOADER_MODE_DEFAULT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EN_LOADER_MODE_ENABLE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EN_LOADER_MODE_DISABLE</span></code></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.ue.include_header</p></td>
+<td><p>string</p></td>
+<td><p>生成UE Utility代码时，额外附加包含文件（版本&gt;=v2.13.1）</p></td>
+</tr>
+</tbody>
+</table>
+<p>比如 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto">xresloader/sample/proto_v3/kind.proto</a> 里， <code class="docutils literal notranslate"><span class="pre">arr_in_arr_cfg</span></code> 配置了相关字段，会影响到一些输出。</p>
+</section>
+<section id="protobuf-field">
+<h3>Protobuf插件 - Field插件<a class="headerlink" href="#protobuf-field" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>插件名称</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>插件功能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>org.xresloader.field_description</p></td>
+<td><p>string</p></td>
+<td><p>字段描述信息，会写入输出的header中和代码中</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.validator</p></td>
+<td><p>string</p></td>
+<td><p>字段描述信息，会写入输出的header中和代码中（版本&gt;=2.14.0-rc2）</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.verifier</p></td>
+<td><p>string</p></td>
+<td><p>(废弃，请使用 org.xresloader.validator)字段描述信息，会写入输出的header中和代码中</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.field_unique_tag</p></td>
+<td><p>string</p></td>
+<td><p>唯一性检测Tag，所有tag相同的字段会组合到一起检查唯一性（版本&gt;=2.14.0-rc2）</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.field_not_null</p></td>
+<td><p>bool</p></td>
+<td><p>如果配置了字段映射，忽略此项为空的行（版本&gt;=2.14.0-rc2）</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.field_alias</p></td>
+<td><p>string</p></td>
+<td><p>字段别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.field_ratio</p></td>
+<td><p>int32</p></td>
+<td><p>数值放大倍数，<code class="docutils literal notranslate"><span class="pre">转出数值=Excel内数值*field_ratio</span></code>。比如设为1000时，如果Excel里填的是1.05，转出的数据是 1050</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.field_separator</p></td>
+<td><p>string</p></td>
+<td><p>Plain模式分隔符，可指定多个，用于在一个单元格内配置复杂格式时的分隔符列表，默认值: <code class="docutils literal notranslate"><span class="pre">,;|</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.field_required</p></td>
+<td><p>bool</p></td>
+<td><p>设置字段为 <strong>required</strong> ，用于向proto3提供，proto2的 <strong>required</strong> 约束</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.field_origin_value</p></td>
+<td><p>string</p></td>
+<td><p>当前字段类型为Timestamp或Duration时且转换过程发生数据转换时，此扩展允许把原始数据写入指定字段。（版本&gt;=2.12.0）
+目标字段必须是string类型且repeated属性和当前字段保持一致</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.ue.key_tag</p></td>
+<td><p>int32</p></td>
+<td><p>生成UE代码时，如果需要支持多个Key组合成一个Name，用这个字段指定系数（必须大于0）</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.ue.ue_type_name</p></td>
+<td><p>string</p></td>
+<td><p>生成UE代码时，如果指定了这个字段，那么生成的字段类型将是 <code class="docutils literal notranslate"><span class="pre">`TSoftObjectPtr&lt;ue_type_name&gt;`</span></code> , 并且支持蓝图中直接引用</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.ue.ue_type_is_class</p></td>
+<td><p>bool</p></td>
+<td><p>生成UE代码时，如果这个字段为true，那么生成的字段类型将是 <code class="docutils literal notranslate"><span class="pre">`TSoftClassPtr&lt;ue_type_name&gt;`</span></code> , 并且支持蓝图中直接引用</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.ue_origin_type_name</p></td>
+<td><p>srtring</p></td>
+<td><p>设置输出UE代码的原始类型（版本&gt;=2.14.0-rc1）</p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.ue_origin_type_default_value</p></td>
+<td><p>srtring</p></td>
+<td><p>设置输出UE代码的原始类型的默认值（版本&gt;=2.14.0-rc1）</p></td>
+</tr>
+</tbody>
+</table>
+<p>比如我们定义单位属性的proto如下：</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="s">&quot;xresloader.proto&quot;</span><span class="p">;</span>
+
+<span class="kd">message</span><span class="w"> </span><span class="nc">unit_attribute</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">hp</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">[(</span><span class="n">org.xresloader.field_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;生命&quot;</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">mp</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">[(</span><span class="n">org.xresloader.field_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;魔力&quot;</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">power</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">[(</span><span class="n">org.xresloader.field_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;力量&quot;</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">message</span><span class="w"> </span><span class="nc">skill_effect</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">id</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">level</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">func_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">attr_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">value</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>然后我们可以在Excel表中使用别名：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>技能ID</p></th>
+<th class="head"><p>等级</p></th>
+<th class="head"><p>功能类别</p></th>
+<th class="head"><p>属性</p></th>
+<th class="head"><p>值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>level</p></td>
+<td><p>func_type</p></td>
+<td><p><a class="reference external" href="mailto:attr_type&#37;&#52;&#48;unit_attribute">attr_type<span>&#64;</span>unit_attribute</a></p></td>
+<td><p>value</p></td>
+</tr>
+<tr class="row-odd"><td><p>20001</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p><strong>生命</strong></p></td>
+<td><p>100</p></td>
+</tr>
+<tr class="row-even"><td><p>20001</p></td>
+<td><p>2</p></td>
+<td><p>1001</p></td>
+<td><p><strong>生命</strong></p></td>
+<td><p>200</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="protobuf-enumvalue">
+<h3>Protobuf插件 - EnumValue插件<a class="headerlink" href="#protobuf-enumvalue" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>插件名称</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>插件功能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>org.xresloader.enumv_description</p></td>
+<td><p>string</p></td>
+<td><p>枚举值描述信息，会写入输出的header中和代码中</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.enum_alias</p></td>
+<td><p>string</p></td>
+<td><p>枚举值别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个</p></td>
+</tr>
+</tbody>
+</table>
+<p>比如 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto">xresloader/sample/proto_v3/kind.proto</a> 里， <code class="docutils literal notranslate"><span class="pre">role_upgrade_cfg</span></code> 内的 <code class="docutils literal notranslate"><span class="pre">CostType</span></code> 这一列配置验证器引射到协议的 <code class="docutils literal notranslate"><span class="pre">cost_type</span></code> 和 协议描述字段。</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="k">syntax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;proto3&quot;</span><span class="p">;</span>
+
+<span class="k">import</span><span class="w"> </span><span class="s">&quot;xresloader.proto&quot;</span><span class="p">;</span>
+<span class="c1">// xresloader的发布页面 https://github.com/xresloader/xresloader/releases 下载</span>
+<span class="c1">// protocols.zip ，即可获取xresloader.proto</span>
+
+<span class="kd">enum</span><span class="w"> </span><span class="n">cost_type</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">EN_CT_UNKNOWN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="na">EN_CT_MONEY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10001</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.enum_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;金币&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">  </span><span class="na">EN_CT_DIAMOND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10101</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.enum_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;钻石&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">message</span><span class="w"> </span><span class="nc">role_upgrade_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">uint32</span><span class="w"> </span><span class="na">Id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32</span><span class="w"> </span><span class="na">Level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uint32</span><span class="w"> </span><span class="na">CostType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">(</span><span class="n">org.xresloader.validator</span><span class="p">)</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="s">&quot;cost_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 这里等同于在Excel中使用 @cost_type 标识</span>
+<span class="w">    </span><span class="p">(</span><span class="n">org.xresloader.field_description</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Refer to cost_type&quot;</span>
+<span class="w">  </span><span class="p">];</span>
+<span class="w">  </span><span class="kt">int32</span><span class="w"> </span><span class="na">CostValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int32</span><span class="w"> </span><span class="na">ScoreAdd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>然后，我们就可以按如下方式配消耗类型:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>角色ID</p></th>
+<th class="head"><p>等级</p></th>
+<th class="head"><p>货币类别</p></th>
+<th class="head"><p>消耗值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Id</p></td>
+<td><p>Level</p></td>
+<td><p>CostType</p></td>
+<td><p><a class="reference external" href="mailto:CostValue&#37;&#52;&#48;0-1000|2000-3000">CostValue<span>&#64;</span>0-1000|2000-3000</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>10001</p></td>
+<td><p>1</p></td>
+<td><p>EN_CT_MONEY</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>10001</p></td>
+<td><p>2</p></td>
+<td><p><strong>金币</strong></p></td>
+<td><p>50</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="protobuf-oneof-2-8-0">
+<h3>Protobuf插件 - Oneof插件(2.8.0版本及以上)<a class="headerlink" href="#protobuf-oneof-2-8-0" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>插件名称</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>插件功能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>org.xresloader.oneof_description</p></td>
+<td><p>string</p></td>
+<td><p>oneof描述信息，可能会写入输出的header中和代码中</p></td>
+</tr>
+<tr class="row-odd"><td><p>org.xresloader.oneof_separator</p></td>
+<td><p>string</p></td>
+<td><p>Plain模式类型和值字段的分隔符，可指定多个，用于在一个单元格内配置复杂格式时的分隔符列表，默认值: <code class="docutils literal notranslate"><span class="pre">,;|</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>org.xresloader.oneof_not_null</p></td>
+<td><p>string</p></td>
+<td><p>如果配置了字段映射，忽略此项为空的行（版本&gt;=v2.14.0-rc2）</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id5">
+<h2>仅导出部分字段<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>如果我们需要给客户端和服务器读取同一张Excel表里的不同字段的数据，只要proto不一样即可。对于proto中不存在的字段，我们在转换的时候会忽略掉。
+即，我们可能会有一个 <code class="docutils literal notranslate"><span class="pre">role_server</span></code> 和 <code class="docutils literal notranslate"><span class="pre">role_client</span></code> 。这两个数据结构不一样，但指向同一个数据源。</p>
+</section>
+<section id="include">
+<h2>批量转表的include标签<a class="headerlink" href="#include" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id6">
+<h2>公式支持<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p><a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 支持公式功能，但是不建议使用跨文件公式。是因为有些平台里，文件的引用可能会使用绝对路径，这时候如果改变一个文件中的值会影响另一个文件。
+而另一个文件计算公式的时候读取失败，则会用之前的数据缓存（Excel中对所有公式的计算结果有缓存）。这时候数据可能滞后，但是是没有提示的。可能会引起困惑。</p>
+</section>
+<section id="id7">
+<h2>定长数组<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<p>详见 <a class="reference internal" href="data_types.html#data-types-stable-array"><span class="std std-ref">数据类型说明-定长数组</span></a> 章节。</p>
+</section>
+<section id="plain-xresloader-2-7-0">
+<h2>Plain模式（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.7.0及以上）<a class="headerlink" href="#plain-xresloader-2-7-0" title="此标题的永久链接"></a></h2>
+<p>为了方便某些特殊场景使用，从 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.7.0版本开始，我们开支支持Plain模式。
+Plain模式的配置方式允许把数字和字符串数组和整个message配置在一个单元格里，多个元素或者多个字段按分隔符分割。分隔符支持多个候选项，实际执行会采用按输入的字符串中，第一个找到的候选项。
+默认的分隔符候选项是 <code class="docutils literal notranslate"><span class="pre">,;|</span></code> 。</p>
+<p>Plain模式不需要额外配置，当数组元素没有配置下标或者配置的映射字段直接指向一个message时，将自动使用Plain模式解析。</p>
+<p>比如对于以下协议：</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">plain_message</span><span class="w"> </span><span class="na">plain_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">int32</span><span class="w"> </span><span class="na">plain_arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">message</span><span class="w"> </span><span class="nc">plain_message</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">int32</span><span class="w"> </span><span class="na">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>如果Excel配置是如下形式:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>配置ID</p></th>
+<th class="head"><p>Plain结构</p></th>
+<th class="head"><p>Plain数组</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>plain_msg</p></td>
+<td><p>plain_arr</p></td>
+</tr>
+<tr class="row-odd"><td><p>101</p></td>
+<td><p>101|1,2,3</p></td>
+<td><p>7;8;9</p></td>
+</tr>
+</tbody>
+</table>
+<p>那么对于 <code class="docutils literal notranslate"><span class="pre">plain_msg</span></code> 字段输入的字符串是 <code class="docutils literal notranslate"><span class="pre">101|1,2,3</span></code> ，第一个 <code class="docutils literal notranslate"><span class="pre">|</span></code> 会作为 <code class="docutils literal notranslate"><span class="pre">plain_msg</span></code> 的字段分隔符， <code class="docutils literal notranslate"><span class="pre">,</span></code> 会作为 <code class="docutils literal notranslate"><span class="pre">plain_msg.param</span></code> 的数组分隔符。
+而对于 <code class="docutils literal notranslate"><span class="pre">plain_arr</span></code> 字段输入的字符串是 <code class="docutils literal notranslate"><span class="pre">7;8;9</span></code> , <code class="docutils literal notranslate"><span class="pre">;</span></code> 会作为数组分隔符。</p>
+<p>如果想要指定自定义分隔符，特别是对 <code class="docutils literal notranslate"><span class="pre">repeated</span> <span class="pre">message</span></code> 要区分message的分隔符和数组的分隔符，可以使用使用 <code class="docutils literal notranslate"><span class="pre">org.xresloader.field_separator</span></code> 插件和 <code class="docutils literal notranslate"><span class="pre">org.xresloader.msg_separator</span></code> 插件。
+需要注意的是，对于数组（repeated）的字段，字段分隔符仅接受通过 <code class="docutils literal notranslate"><span class="pre">org.xresloader.field_separator</span></code> 指定，而非数组的复杂数据结构（非repeated message） <code class="docutils literal notranslate"><span class="pre">org.xresloader.field_separator</span></code> 插件和 <code class="docutils literal notranslate"><span class="pre">org.xresloader.msg_separator</span></code> 都可以用于指定分隔符。</p>
+<p>同时，在Plain模式中，message字段解析是严格按照配置的field number的顺序。</p>
+<p>更多详情请参考 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 的 <code class="docutils literal notranslate"><span class="pre">arr_in_arr</span></code> 表，对应协议是 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto">xresloader/sample/proto_v3/kind.proto</a> 中的 <code class="docutils literal notranslate"><span class="pre">message</span> <span class="pre">arr_in_arr_cfg</span></code> 。</p>
+<p><strong>``UE-Csv`` 和 ``UE-Json`` 输出的Plain模式需要 `xresloader`_ 2.8.0及以上。</strong></p>
+</section>
+<section id="oneof-union-xresloader-2-8-0">
+<h2>Oneof/Union支持（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.8.0及以上）<a class="headerlink" href="#oneof-union-xresloader-2-8-0" title="此标题的永久链接"></a></h2>
+<p><a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 对Oneof的支持和Plain模式类似，并且只能通过Plain模式一样的方法配置，可以使用 <code class="docutils literal notranslate"><span class="pre">org.xresloader.oneof_separator</span></code> 插件指定自定义分隔符。</p>
+<p>Oneof/Union支持的配置方法是直接在Excel字段映射中配置oneof的名字。输入字符串中第一组为字段的名字、数字标识（field number）或别名，第二组为对应的类型的Plain模式输入。比如:</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="c1">// 常量类型</span>
+<span class="kd">enum</span><span class="w"> </span><span class="n">cost_type</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">EN_CT_UNKNOWN</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="na">EN_CT_MONEY</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="mi">10001</span><span class="w"> </span><span class="p">[(</span><span class="n">org.xresloader.enum_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;金币&quot;</span><span class="p">];</span>
+<span class="w">    </span><span class="na">EN_CT_DIAMOND</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="mi">10101</span><span class="w"> </span><span class="p">[(</span><span class="n">org.xresloader.enum_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;钻石&quot;</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="kd">message</span><span class="w"> </span><span class="nc">cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int32</span><span class="w"> </span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="k">oneof</span><span class="w"> </span><span class="n">reward</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">plain_message</span><span class="w"> </span><span class="na">msg</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;嵌套结构&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">int64</span><span class="w">         </span><span class="na">user_exp</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;数字类型&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">string</span><span class="w">        </span><span class="na">note</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;描述文本&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="n">cost_type</span><span class="w">     </span><span class="na">enum_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_alias</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;货币类型&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">message</span><span class="w"> </span><span class="nc">plain_message</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int32</span><span class="w"> </span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">int32</span><span class="w"> </span><span class="na">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>以下输入都是允许的：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>配置ID</p></th>
+<th class="head"><p>Oneof结构</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>reward</p></td>
+</tr>
+<tr class="row-odd"><td><p>1001</p></td>
+<td><p>msg|101;1,2,3</p></td>
+</tr>
+<tr class="row-even"><td><p>1002</p></td>
+<td><p>数字类型|100</p></td>
+</tr>
+<tr class="row-odd"><td><p>1003</p></td>
+<td><p>13|Hello World</p></td>
+</tr>
+<tr class="row-even"><td><p>1004</p></td>
+<td><p>enum_type|金币</p></td>
+</tr>
+<tr class="row-odd"><td><p>1005</p></td>
+<td><p>货币类型|EN_CT_DIAMOND</p></td>
+</tr>
+</tbody>
+</table>
+<p>需要特别注意的是，和Plain模式一样，message字段解析是严格按照配置的field number的顺序，如果message里有嵌套的oneof，那么oneof的输入位置是第一个相关字段的位置，并且该oneof里后续的字段不需要配置。</p>
+<p>更多详情请参考 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 的 <code class="docutils literal notranslate"><span class="pre">test_oneof</span></code> 表，对应协议是 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto">xresloader/sample/proto_v3/kind.proto</a> 中的 <code class="docutils literal notranslate"><span class="pre">message</span> <span class="pre">event_cfg</span></code> 。</p>
+</section>
+<section id="map-xresloader-2-9-0">
+<h2>Map类型支持（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.9.0及以上）<a class="headerlink" href="#map-xresloader-2-9-0" title="此标题的永久链接"></a></h2>
+<p>从 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.9.0 版本开始，我们支持使用 protobuf 内置的map类型。map类型的数据输入配置和数组类似，与其不同的是，我们增加了内置的 <code class="docutils literal notranslate"><span class="pre">key</span></code> 和 <code class="docutils literal notranslate"><span class="pre">value</span></code> 字段用于通过标准模式指定元素的 <code class="docutils literal notranslate"><span class="pre">key</span></code> 和 <code class="docutils literal notranslate"><span class="pre">value</span></code>。
+当然我们也可以使用Plain模式的输入。比如以下的协议:</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">dep2_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w"> </span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">message</span><span class="w"> </span><span class="nc">arr_in_arr_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.helper</span><span class="p">)</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;helper&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.msg_description</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Test arr_in_arr_cfg&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">uint32</span><span class="w">   </span><span class="na">id</span><span class="w">                       </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.ue.key_tag</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_description</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is a Key&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="n">map</span><span class="p">&lt;</span><span class="kt">int32</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">&gt;</span><span class="w">    </span><span class="na">test_map_is</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span>
+<span class="w">    </span><span class="n">map</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">dep2_cfg</span><span class="p">&gt;</span><span class="w"> </span><span class="na">test_map_sm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_separator</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;|&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>我们接受如下的Excel输入:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>配置ID</p></th>
+<th class="head"><p>Map嵌套模式[0].key</p></th>
+<th class="head"><p>Map嵌套模式[0].value</p></th>
+<th class="head"><p>Map嵌套模式[1].key</p></th>
+<th class="head"><p>Map嵌套模式[1].value</p></th>
+<th class="head"><p>MapPlain模式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>test_map_is[0].key</p></td>
+<td><p>test_map_is[0].value</p></td>
+<td><p>test_map_is[1].key</p></td>
+<td><p>test_map_is[1].value</p></td>
+<td><p>test_map_sm</p></td>
+</tr>
+<tr class="row-odd"><td><p>1001</p></td>
+<td><p>10</p></td>
+<td><p>Map嵌套模式[0].value</p></td>
+<td><p>11</p></td>
+<td><p>Map嵌套模式[1].value</p></td>
+<td><p>aa;111,112|特殊:字符;121,122</p></td>
+</tr>
+<tr class="row-even"><td><p>1002</p></td>
+<td><p>20</p></td>
+<td><p>Map嵌套模式[0].value</p></td>
+<td><p>21</p></td>
+<td><p>Map嵌套模式[1].value</p></td>
+<td><p>ba;211,212|特殊.字符;221,222</p></td>
+</tr>
+<tr class="row-odd"><td><p>1003</p></td>
+<td><p>30</p></td>
+<td><p>Map嵌套模式[0].value</p></td>
+<td><p>31</p></td>
+<td><p>Map嵌套模式[1].value</p></td>
+<td><p>ca;311,312|cb;321,322</p></td>
+</tr>
+</tbody>
+</table>
+<p>对于 <code class="docutils literal notranslate"><span class="pre">UE-Csv</span></code> 和 <code class="docutils literal notranslate"><span class="pre">UE-Json</span></code> 模式的输出，我们会输入如下的代码：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">USTRUCT</span><span class="p">(</span><span class="n">BlueprintType</span><span class="p">)</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">FArrInArrCfg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">FTableRowBase</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">GENERATED_USTRUCT_BODY</span><span class="p">()</span>
+
+<span class="w">    </span><span class="c1">// Start of fields</span>
+<span class="w">    </span><span class="cm">/** Field Type: STRING, Name: Name, Index: 0. This field is generated for UE Editor compatible. **/</span>
+<span class="w">    </span><span class="n">UPROPERTY</span><span class="p">(</span><span class="n">EditAnywhere</span><span class="p">,</span><span class="w"> </span><span class="n">BlueprintReadOnly</span><span class="p">,</span><span class="w"> </span><span class="n">Category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;XResConfig&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">FName</span><span class="w"> </span><span class="n">Name</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// This is a Key</span>
+<span class="w">    </span><span class="cm">/** Field Type: INT, Name: Id, Index: 1 **/</span>
+<span class="w">    </span><span class="n">UPROPERTY</span><span class="p">(</span><span class="n">EditAnywhere</span><span class="p">,</span><span class="w"> </span><span class="n">BlueprintReadOnly</span><span class="p">,</span><span class="w"> </span><span class="n">Category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;XResConfig&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">int32</span><span class="w"> </span><span class="n">Id</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/** Field Type: MESSAGE, Name: TestMapIs, Index: 7 **/</span>
+<span class="w">    </span><span class="n">UPROPERTY</span><span class="p">(</span><span class="n">EditAnywhere</span><span class="p">,</span><span class="w"> </span><span class="n">BlueprintReadOnly</span><span class="p">,</span><span class="w"> </span><span class="n">Category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;XResConfig&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">TMap</span><span class="o">&lt;</span><span class="w"> </span><span class="n">int32</span><span class="p">,</span><span class="w"> </span><span class="n">FString</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TestMapIs</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/** Field Type: MESSAGE, Name: TestMapSm, Index: 8 **/</span>
+<span class="w">    </span><span class="n">UPROPERTY</span><span class="p">(</span><span class="n">EditAnywhere</span><span class="p">,</span><span class="w"> </span><span class="n">BlueprintReadOnly</span><span class="p">,</span><span class="w"> </span><span class="n">Category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;XResConfig&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">TMap</span><span class="o">&lt;</span><span class="w"> </span><span class="n">FString</span><span class="p">,</span><span class="w"> </span><span class="n">FDep2Cfg</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TestMapSm</span><span class="p">;</span>
+
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>特别的对于 <code class="docutils literal notranslate"><span class="pre">xml</span></code> 类型的输出，由于map中的key的数据可能会不符合 <code class="docutils literal notranslate"><span class="pre">xml</span></code> 的tag的规则，所以我们对于map输出的数据中 <code class="docutils literal notranslate"><span class="pre">tagName</span></code> 采用类型名， 即 <code class="docutils literal notranslate"><span class="pre">string</span></code> , <code class="docutils literal notranslate"><span class="pre">int32</span></code> , <code class="docutils literal notranslate"><span class="pre">int64</span></code> 。
+然后增加 <code class="docutils literal notranslate"><span class="pre">key</span></code> 属性用于指示map中key的内容，增加 <code class="docutils literal notranslate"><span class="pre">type</span></code> 属性指示类型名。</p>
+<p>更多详情请参考 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 的 <code class="docutils literal notranslate"><span class="pre">arr_in_arr</span></code> 表，对应协议是 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto">xresloader/sample/proto_v3/kind.proto</a> 中的 <code class="docutils literal notranslate"><span class="pre">message</span> <span class="pre">arr_in_arr_cfg</span></code> 。</p>
+</section>
+<section id="callbackscript-xresloader-2-13-0">
+<h2>使用 <code class="docutils literal notranslate"><span class="pre">CallbackScript</span></code> 处理数据（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.13.0及以上）<a class="headerlink" href="#callbackscript-xresloader-2-13-0" title="此标题的永久链接"></a></h2>
+<p>从 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.13.0 版本开始，我们通过支持指定一个javascript脚本来修改生成的数据（通过 <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">CallbackScript=脚本路径</span></code> ，参考: <a class="reference internal" href="data_mapping.html#data-mapping-available-options"><span class="std std-ref">可用的配置项</span></a> ）。</p>
+<p>CallbackScript指向的javascript脚本中，需要满足已下条件:</p>
+<ul class="simple">
+<li><p>可使用 <code class="docutils literal notranslate"><span class="pre">gOurInstance</span></code> 访问数据源接口（ <code class="docutils literal notranslate"><span class="pre">DataSrcImpl.getOurInstance()</span></code> ）</p></li>
+<li><p>可使用 <code class="docutils literal notranslate"><span class="pre">gSchemeConf</span></code> 访问数据转换配置接口（ <code class="docutils literal notranslate"><span class="pre">SchemeConf.getInstance()</span></code> ）</p></li>
+<li><p>提供 <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">initDataSource()</span></code> 函数，将在切换数据源时触发（文件名或sheet名）。</p></li>
+<li><p>提供 <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">currentMessageCallback(originMsg,</span> <span class="pre">typeDesc)</span></code> 函数，将在切换数据源时触发（文件名或sheet名）。</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">originMsg</span></code> 为原始数据结构的 <code class="docutils literal notranslate"><span class="pre">HashMap</span></code> 结构</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">typeDesc</span></code> 为数据类型描述信息, <code class="docutils literal notranslate"><span class="pre">org.xresloader.core.data.dst.DataDstWriterNode.DataDstTypeDescriptor</span></code> 结构</p></li>
+</ul>
+</li>
+</ul>
+<p>更多详情请参考 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 的 <code class="docutils literal notranslate"><span class="pre">process_by_script1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">process_by_script2</span></code> 表，还有 <code class="docutils literal notranslate"><span class="pre">cb_script.js</span></code> 文件。</p>
+</section>
+<section id="xresloader-2-14-0-rc1">
+<h2>多字段复制（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.14.0-rc1及以上）<a class="headerlink" href="#xresloader-2-14-0-rc1" title="此标题的永久链接"></a></h2>
+<p>可以在Excel <code class="docutils literal notranslate"><span class="pre">KeyRow</span></code> 指向的列里填写多个由 <code class="docutils literal notranslate"><span class="pre">,</span></code> 分隔的字段名，这样在转出的时候会把数据分别填充到这些字段里。比如:</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">level_data_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w"> </span><span class="na">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w"> </span><span class="na">exp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">message</span><span class="w"> </span><span class="nc">level_up_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">option</span><span class="w"> </span><span class="p">(</span><span class="n">xrescode.loader</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">file_path</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;level_up.bytes&quot;</span>
+<span class="w">        </span><span class="n">indexes</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">fields</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="n">fields</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;level&quot;</span><span class="w"> </span><span class="n">index_type</span><span class="o">:</span><span class="w"> </span><span class="n">EN_INDEX_KV</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">tags</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;client&quot;</span>
+<span class="w">        </span><span class="n">tags</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;server&quot;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w">         </span><span class="na">id</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w">         </span><span class="na">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">level_data_cfg</span><span class="w"> </span><span class="na">data</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>角色ID</p></th>
+<th class="head"><p>等级</p></th>
+<th class="head"><p>经验</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>level,data.level</p></td>
+<td><p>data.exp</p></td>
+</tr>
+<tr class="row-odd"><td><p>10001</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="excel-xresloader-2-14-0-rc2">
+<h2>剔除Excel误操作带来的空数据行（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.14.0-rc2及以上）<a class="headerlink" href="#excel-xresloader-2-14-0-rc2" title="此标题的永久链接"></a></h2>
+<p>我们可以通过 <cite>org.xresloader.field_not_null</cite> 插件和 <cite>org.xresloader.oneof_not_null</cite> 插件来用以忽略Excel中指定数据为空的数据行。
+特别是对Excel误操作（比如漏删除空单元格，不小心设置了某个空数据行的单元格格式）。比如:</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">level_up_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w">         </span><span class="na">id</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_not_null</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w">         </span><span class="na">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>角色ID</p></th>
+<th class="head"><p>等级</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>level</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>10001</p></td>
+<td><p>1</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>2</p></td>
+<td><p>此行会被忽略</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="xresloader-2-14-0-rc2">
+<h2>唯一性检测（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.14.0-rc2及以上）<a class="headerlink" href="#xresloader-2-14-0-rc2" title="此标题的永久链接"></a></h2>
+<p>我们可以通过 <cite>org.xresloader.field_unique_tag</cite> 插件来设置唯一性检测标签。可多个。
+对于相同唯一性检测标签的所有字段组合，只能出现一次。否则转换过程就会报错。比如:</p>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">level_up_cfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w">         </span><span class="na">id</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_unique_tag</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;id_level&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w">         </span><span class="na">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">(</span><span class="n">org.xresloader.field_unique_tag</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;id_level&quot;</span><span class="w"> </span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>角色ID</p></th>
+<th class="head"><p>等级</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>level</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>10001</p></td>
+<td><p>1</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>10001</p></td>
+<td><p>2</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>10001</p></td>
+<td><p>1</p></td>
+<td><p>此行会冲突</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="xresloader-2-14-0-rc3">
+<h2>通过自定义验证器在复用验证器规则组合（需要 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 2.14.0-rc3及以上）<a class="headerlink" href="#xresloader-2-14-0-rc3" title="此标题的永久链接"></a></h2>
+<p>自定义验证器主要用于重复使用一些复杂组合的验证规则。比如我们配置奖励表，要求奖励必须是某个虚拟的道具ID（对应protobuf的枚举类型），或者在道具表中，或者在邮件表中，或者在商城表中等等。
+每一个要配置奖励的地方都去单独写这么长的验证规则，一方面不好看，另一方面后续增加新类型维护起来非常容易出错。于是我们现在提供了一个自定义验证器的功能。</p>
+<p>首先是增加了 <code class="docutils literal notranslate"><span class="pre">--validator-rules</span></code> 参数用于告诉 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 去哪里读取自定义验证器，自定义验证器配置是一个 YAML 文件，格式如下:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">validator</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;validator</span><span class="nv"> </span><span class="s">name&quot;</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;（可选）描述&quot;</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">子规则1</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">子规则2</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>为了降低错误配置，我们会检测验证器的环形依赖。但是为了降低不必要的检测开销，我们仅仅在第一次使用这个验证器时才会做检查。</p>
+<p>比如我们配置验证器:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">validator</span><span class="p">:</span>
+<span class="c1"># com.struct.battle.config.proto</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UESourceAbilitySet_ue_source_id&quot;</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UE局内</span><span class="nv"> </span><span class="s">AbilitySet资源</span><span class="nv"> </span><span class="s">值校验&quot;</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InText(&quot;UeSource_AbilitySet.txt&quot;, 3)</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ExcelAffixCountRandomPool_affix_count_pool_id&quot;</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Affix.xlsx|词条数量随机池表|affix_count_pool_id</span><span class="nv"> </span><span class="s">值校验&quot;</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InTableColumn(&quot;Affix.xlsx&quot;, &quot;词条数量随机池表&quot;, 3, 2, &quot;affix_count_pool_id&quot;)</span>
+</pre></div>
+</div>
+<p>验证器检查不通过的一个示例如下(还包含一个唯一性检查报错):</p>
+<img alt="../_images/custom_validator.png" src="../_images/custom_validator.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="xres_code_generator.html" class="btn btn-neutral float-left" title="使用 xres-code-generator 生成解析代码" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="ecosystem_and_tools.html" class="btn btn-neutral float-right" title="生态和周边工具" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, xresloader.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
