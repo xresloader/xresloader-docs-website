@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>使用国内的源 &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=1fb93e06" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=26a91e76"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="转表引擎设计模型" href="design_xresloader.html" />
+    <link rel="prev" title="编译和打包" href="build.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../users/download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/data_types.html">数据类型说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users/faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build.html">编译和打包</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">使用国内的源</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#maven">国内的Maven源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#npm">加速NPM包下载</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#npmhttps">关闭npm的https</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">设置npm的软件源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">代理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">使用国内的源</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/pkg_source.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>使用国内的源<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="maven">
+<h2>国内的Maven源<a class="headerlink" href="#maven" title="Link to this heading"></a></h2>
+<p>由于国内访问官方maven仓库的速度比较慢，所以可以尝试使用oschina提供的maven仓库镜像</p>
+<p>添加mirror节点到settings.xml里的mirrors即可。比如</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">mirror</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="n">tencent</span><span class="o">-</span><span class="n">cloud</span><span class="o">&lt;/</span><span class="nb">id</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">mirrorOf</span><span class="o">&gt;</span><span class="n">central</span><span class="o">&lt;/</span><span class="n">mirrorOf</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">Tencent</span> <span class="n">Cloud</span> <span class="n">Mirror</span><span class="o">.&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">tencent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">nexus</span><span class="o">/</span><span class="n">repository</span><span class="o">/</span><span class="n">maven</span><span class="o">-</span><span class="n">public</span><span class="o">/&lt;/</span><span class="n">url</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mirror</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">mirror</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="n">aliyun</span><span class="o">&lt;/</span><span class="nb">id</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">mirrorOf</span><span class="o">&gt;</span><span class="n">central</span><span class="o">&lt;/</span><span class="n">mirrorOf</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">Aliyun</span> <span class="n">Mirror</span><span class="o">.&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">maven</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">nexus</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">groups</span><span class="o">/</span><span class="n">public</span><span class="o">/&lt;/</span><span class="n">url</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mirror</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">mirror</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="n">repo2</span><span class="o">&lt;/</span><span class="nb">id</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">mirrorOf</span><span class="o">&gt;</span><span class="n">central</span><span class="o">&lt;/</span><span class="n">mirrorOf</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">Human</span> <span class="n">Readable</span> <span class="n">Name</span> <span class="k">for</span> <span class="n">this</span> <span class="n">Mirror</span><span class="o">.&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">repo2</span><span class="o">.</span><span class="n">maven</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">maven2</span><span class="o">/&lt;/</span><span class="n">url</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mirror</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">mirror</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="n">ui</span><span class="o">&lt;/</span><span class="nb">id</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">mirrorOf</span><span class="o">&gt;</span><span class="n">central</span><span class="o">&lt;/</span><span class="n">mirrorOf</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">Human</span> <span class="n">Readable</span> <span class="n">Name</span> <span class="k">for</span> <span class="n">this</span> <span class="n">Mirror</span><span class="o">.&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">uk</span><span class="o">.</span><span class="n">maven</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">maven2</span><span class="o">/&lt;/</span><span class="n">url</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mirror</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">mirror</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="n">jboss</span><span class="o">-</span><span class="n">public</span><span class="o">-</span><span class="n">repository</span><span class="o">-</span><span class="n">group</span><span class="o">&lt;/</span><span class="nb">id</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">mirrorOf</span><span class="o">&gt;</span><span class="n">central</span><span class="o">&lt;/</span><span class="n">mirrorOf</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">JBoss</span> <span class="n">Public</span> <span class="n">Repository</span> <span class="n">Group</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">repository</span><span class="o">.</span><span class="n">jboss</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">nexus</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">groups</span><span class="o">/</span><span class="n">public</span><span class="o">&lt;/</span><span class="n">url</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mirror</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">mirror</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="n">repo1</span><span class="o">&lt;/</span><span class="nb">id</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">mirrorOf</span><span class="o">&gt;</span><span class="n">central</span><span class="o">&lt;/</span><span class="n">mirrorOf</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">Human</span> <span class="n">Readable</span> <span class="n">Name</span> <span class="k">for</span> <span class="n">this</span> <span class="n">Mirror</span><span class="o">.&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">repo1</span><span class="o">.</span><span class="n">maven</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">maven2</span><span class="o">/&lt;/</span><span class="n">url</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mirror</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>如果$HOME/.m2下没有settings.xml文件，可以去 <a class="reference external" href="http://maven.apache.org/download.cgi">http://maven.apache.org/download.cgi</a> 下载个发布包，然后复制一个出来</p>
+<p>设置完maven配置之后，可以用如下命令编译打包</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 编译</span>
+<span class="n">mvn</span> <span class="o">-</span><span class="n">s</span> <span class="p">[</span><span class="n">settings</span><span class="o">.</span><span class="n">xml路径</span><span class="p">]</span> <span class="nb">compile</span>
+<span class="c1"># 打包</span>
+<span class="n">mvn</span> <span class="o">-</span><span class="n">s</span> <span class="p">[</span><span class="n">settings</span><span class="o">.</span><span class="n">xml路径</span><span class="p">]</span> <span class="n">package</span>
+</pre></div>
+</div>
+</section>
+<section id="npm">
+<h2>加速NPM包下载<a class="headerlink" href="#npm" title="Link to this heading"></a></h2>
+<section id="npmhttps">
+<h3>关闭npm的https<a class="headerlink" href="#npmhttps" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">strict</span><span class="o">-</span><span class="n">ssl</span> <span class="n">false</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>设置npm的软件源<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">registry</span> <span class="s2">&quot;http://registry.npmjs.org/&quot;</span>
+<span class="n">npm</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">registry</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">tencent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">npm</span><span class="o">/</span>
+<span class="n">npm</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">registry</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">registry</span><span class="o">.</span><span class="n">npm</span><span class="o">.</span><span class="n">taobao</span><span class="o">.</span><span class="n">org</span><span class="o">/</span>
+<span class="n">npm</span> <span class="n">install</span> <span class="o">-</span><span class="n">g</span> <span class="n">cnpm</span> <span class="o">--</span><span class="n">registry</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">registry</span><span class="o">.</span><span class="n">npm</span><span class="o">.</span><span class="n">taobao</span><span class="o">.</span><span class="n">org</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>代理<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>设置代理： <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">proxy=http://代理服务器ip:代理服务器端口</span></code></p></li>
+<li><p>取消代理： <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">config</span> <span class="pre">delete</span> <span class="pre">http-proxy</span></code></p></li>
+<li><p>取消代理： <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">config</span> <span class="pre">delete</span> <span class="pre">https-proxy</span></code></p></li>
+<li><p>单独设置代理： <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save-dev</span> <span class="pre">electron-prebuilt</span> <span class="pre">--proxy</span> <span class="pre">http://代理服务器ip:代理服务器端口</span></code></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="build.html" class="btn btn-neutral float-left" title="编译和打包" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="design_xresloader.html" class="btn btn-neutral float-right" title="转表引擎设计模型" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, xresloader。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

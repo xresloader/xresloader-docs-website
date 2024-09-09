@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>协议-&gt;Excel数据映射和支持的配置读取源 （scheme） &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=1fb93e06" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=26a91e76"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="数据输出和数据加载" href="output_format.html" />
+    <link rel="prev" title="转表引擎-xresloader" href="xresloader_core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">配置项的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scheme">数据映射-Scheme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">数据源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#message">类型嵌套和Message嵌套</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">数组和下标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-mapping-available-options">可用的配置项</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">关于设置编码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#callbackscript">关于使用 <code class="docutils literal notranslate"><span class="pre">CallbackScript</span></code> 处理数据</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">从哪里读取字段映射信息？</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">直接写在批量转表文件里（推荐）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#excel-xls-xlsx">直接写在Excel里: 文件后缀.xls,.xlsx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#json-json">直接写在json文件里: 文件后缀.json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ini-ini-conf-cfg">直接写在ini文件里: 文件后缀.ini,.conf,.cfg</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">完整的样例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_types.html">数据类型说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/users/data_mapping.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="excel-scheme">
+<h1>协议-&gt;Excel数据映射和支持的配置读取源 （scheme）<a class="headerlink" href="#excel-scheme" title="Link to this heading"></a></h1>
+<p>在 <a class="reference internal" href="quick_start.html"><span class="doc">快速上手</span></a> 章节里我们提供了一个基本的转表使用流程。整个流程图示如下：</p>
+<img alt="../_images/xresconv_process.png" src="../_images/xresconv_process.png" />
+<p>上一章节里我们展示了 <a class="reference internal" href="xresloader_core.html"><span class="doc">转表引擎-xresloader</span></a> 的最基础的使用方式。
+在使用的时候，我们需要告诉 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 怎么把Excel里的数据对引到协议的数据结构里。
+本章节主要是针对 <code class="docutils literal notranslate"><span class="pre">协议描述</span></code> 的说明。</p>
+<section id="id1">
+<h2>配置项的结构<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>所有的数据源和规则设置都是Key-Value的形式。并且Value有三个，分别是**主配置，次要配置，补充配置**。
+这三个参数对于不同配置的含义是不同的，具体没想配置的含义请参照 <a class="reference internal" href="#data-mapping-available-options">data-mapping-available-options</a> 章节。</p>
+</section>
+<section id="scheme">
+<h2>数据映射-Scheme<a class="headerlink" href="#scheme" title="Link to this heading"></a></h2>
+<p>我们通过一些列scheme的配置来告诉 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 从Excel的哪些地方读取数据，又转化到协议的哪个数据结构和哪个字段中。</p>
+<section id="id2">
+<h3>数据源<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>我们通过 <code class="docutils literal notranslate"><span class="pre">DataSource</span></code> 来读取我们从哪个文件、哪个表及第几行第几列开始读数据。 比如：</p>
+<img alt="../_images/data_mapping_data_source.png" src="../_images/data_mapping_data_source.png" />
+<p>然后再通过 <code class="docutils literal notranslate"><span class="pre">ProtoName</span></code> 和 <code class="docutils literal notranslate"><span class="pre">KeyRow</span></code> 来把Excel数据映射到哪个协议数据结构里和映射哪些字段。</p>
+<img alt="../_images/data_mapping_data_key_and_proto.png" src="../_images/data_mapping_data_key_and_proto.png" />
+</section>
+<section id="message">
+<h3>类型嵌套和Message嵌套<a class="headerlink" href="#message" title="Link to this heading"></a></h3>
+<p>对于复杂的数据类型，我们使用 <code class="docutils literal notranslate"><span class="pre">父级字段名.子结构字段名</span></code> 来标识映射关系。比如在 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 中。</p>
+<img alt="../_images/data_mapping_rec_message.png" src="../_images/data_mapping_rec_message.png" />
+<p>以上划红线处为Excel <code class="docutils literal notranslate"><span class="pre">KeyRow</span></code> 配置和对应的协议结构。</p>
+</section>
+<section id="id3">
+<h3>数组和下标<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>对于数组类型（protobuf的repeated类型）。我们使用 <code class="docutils literal notranslate"><span class="pre">字段名[0开始的下标]</span></code> 来表示。如果是数组嵌套数组，那么则是 <code class="docutils literal notranslate"><span class="pre">父级字段名[父结构下标].子结构字段名[子结构下标]</span></code> 。</p>
+<img alt="../_images/data_mapping_arr_in_arr.png" src="../_images/data_mapping_arr_in_arr.png" />
+<p>以上示例是 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 中的 <code class="docutils literal notranslate"><span class="pre">arr_in_arr</span></code> 表。</p>
+</section>
+</section>
+<section id="data-mapping-available-options">
+<span id="id4"></span><h2>可用的配置项<a class="headerlink" href="#data-mapping-available-options" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>简介</p></th>
+<th class="head"><p>主配置</p></th>
+<th class="head"><p>次配置</p></th>
+<th class="head"><p>补充配置</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">DataSource</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">配置数据源</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">文件路径</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">表名</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">数据起始行号,列号</div>
+<div class="line">(英文逗号分隔)</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><strong>必须</strong>。</div>
+<div class="line">可多个。多个则表示把多个Excel表数</div>
+<div class="line">据合并再生成配置输出，这意味着这多</div>
+<div class="line">个Excel表的描述Key的顺序和个数必须</div>
+<div class="line">相同。</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">MacroSource</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">元数据数据源</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">文件路径</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">表名</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">数据起始行号,列号</div>
+<div class="line">(英文逗号分隔)</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <strong>可选</strong></div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>编程接口配置</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">ProtoName</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">协议描述名称</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">如: role_cfg</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <strong>必须</strong></div>
+<div class="line">+ 协议类型名称</div>
+<div class="line">+ 也可以是 <code class="docutils literal notranslate"><span class="pre">包名</span></code> . <code class="docutils literal notranslate"><span class="pre">协议名</span></code></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>OutputFile</p></td>
+<td><p>输出文件</p></td>
+<td><p>如: role_cfg.bin</p></td>
+<td></td>
+<td></td>
+<td><ul class="simple">
+<li><p><strong>必须</strong></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>KeyRow</p></td>
+<td><p>字段名描述行</p></td>
+<td><p>如: 2</p></td>
+<td></td>
+<td></td>
+<td><ul class="simple">
+<li><p><strong>必须</strong></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">KeyCase</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">字段名大小写</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">如: 小写</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ 字段名映射时的大小写转换</div>
+<div class="line">+ 可选值: 大写/小写/不变</div>
+<div class="line">+ 如果不需要则留空</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">KeyWordSplit</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">字段名分词字符</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <strong>可选</strong></div>
+<div class="line">+ 字段名映射时单词之间填充的字符串</div>
+<div class="line">+ 如果不需要则留空</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">KeyPrefix</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">字段名固定前缀</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <strong>可选</strong></div>
+<div class="line">+ 字段名映射时附加的前缀</div>
+<div class="line">+ 如果不需要则留空</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">KeySuffix</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">字段名固定后缀</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <strong>可选</strong></div>
+<div class="line">+ 字段名映射时附加的后缀</div>
+<div class="line">+ 如果不需要则留空</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">KeyWordRegex</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">分词规则（正则表达式）</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">示例:</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">判断规则</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">[A-Z_$ trn]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">移除分词符号规则</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">[_$ trn]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">前缀过滤规则</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">[a-zA-Z_$]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <strong>可选</strong></div>
+<div class="line">+ 字段名映射时单词的分词规则</div>
+<div class="line">+ 正则表达式</div>
+<div class="line">+ 如果不需要则留空</div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">Encoding</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">编码转换</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">UTF-8</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">注：Google的protobuf库的代码里写死</div>
+<div class="line">了UTF-8，故而该选项对Protobuf的二</div>
+<div class="line">进制输出无效</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">UeCfg-UProperty</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">UnrealEngine配置</div>
+<div class="line">支持的字段属性</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">字段分组</div>
+<div class="line">默认值: XResConfig</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">蓝图权限</div>
+<div class="line">默认值: XResConfig</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">编辑权限</div>
+<div class="line">默认值: EditAnywhere</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">UeCfg-CaseConvert</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">是否开启驼峰命名转换</div>
+<div class="line">（默认开启）</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">true/false</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line">+ 开启后将使用首字母大写的</div>
+<div class="line">驼峰命名法生成字段名和类名</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">UeCfg-CodeOutput</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">设置UE代码输出目录</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">代码输出目录</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Publich目录前缀</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Private目录前缀</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line">+ 生成的cpp文件的包含路径和</div>
+<div class="line">Publich目录前缀有关</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">UeCfg-DestinationPath</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">资源输出目录</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">资源输出目录</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">UeCfg-CsvObjectWrapper</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">指定 <code class="docutils literal notranslate"><span class="pre">Ue-Csv</span></code> 模式输</div>
+<div class="line">出时，map和array的包裹</div>
+<div class="line">字符</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">左包裹字符</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">右包裹字符</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line">+ 版本&gt;=2.9.3</div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">UeCfg-EnableDefaultLoader</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">是否启用UE默认的Loader</div>
+<div class="line"><br /></div>
+<div class="line">输出的数据</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">true/false</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line">+ 默认值: <code class="docutils literal notranslate"><span class="pre">true</span></code></div>
+<div class="line">+ 版本&gt;=2.13.1</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">UeCfg-IncludeHeader</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">UE代码额外的自定义包</div>
+<div class="line">输出的数据</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">头文件路径</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">头文件路径</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">头文件路径</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line">+ 版本&gt;=2.13.1</div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">JsonCfg-LargeNumberAsString</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">JSON输出时大整数转字符串</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">true/false</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line">+ 版本&gt;=2.16.0</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">CallbackScript</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">使用Javascript脚本处理</div>
+<div class="line">输出的数据</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Javascript脚本路径</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ <em>可选</em></div>
+<div class="line">+ 版本&gt;=2.13.0</div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>如果Excel里字段名使用上面示例里的规则，如果填的是 0UnlockLevel_num，则会忽略第一个0（不符合前缀过滤规则）,按分词规则分词为Unlock、Level和num，
+同时移除下划线分词符号（移除分词符号规则）。 然后按上面的大小写规则和 <code class="docutils literal notranslate"><span class="pre">字段名分词字符</span></code> 组成新的字段名，最后应用大小写规则。
+假设 <code class="docutils literal notranslate"><span class="pre">字段名分词字符</span></code> 是 <code class="docutils literal notranslate"><span class="pre">_</span></code> 。 <code class="docutils literal notranslate"><span class="pre">字段名大小写</span></code> 是小写，则最后对应的协议的字段名是 <code class="docutils literal notranslate"><span class="pre">unlock_level_num</span></code> 。</p>
+<p>字段名分词、大小写转换、等字段名转换的功能建议非必要不要使用。这里只是为了有些时候需要和其他工具搭配使用的时候的一些适配。</p>
+<section id="id5">
+<h3>关于设置编码<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>由于protobuf里写死的UTF-8，所以编码设置不是对所有的功能都生效。如果输出的类型是代码文件或者文本文件，那么转表工具会尝试把文本内容转换成该编码。
+对于二进制输出，这个选项是无效的。</p>
+</section>
+<section id="callbackscript">
+<h3>关于使用 <code class="docutils literal notranslate"><span class="pre">CallbackScript</span></code> 处理数据<a class="headerlink" href="#callbackscript" title="Link to this heading"></a></h3>
+<p>CallbackScript指向的脚本中，需要满足已下条件:</p>
+<ul class="simple">
+<li><p>可使用 <code class="docutils literal notranslate"><span class="pre">gOurInstance</span></code> 访问数据源接口（ <code class="docutils literal notranslate"><span class="pre">DataSrcImpl.getOurInstance()</span></code> ）</p></li>
+<li><p>可使用 <code class="docutils literal notranslate"><span class="pre">gSchemeConf</span></code> 访问数据转换配置接口（ <code class="docutils literal notranslate"><span class="pre">SchemeConf.getInstance()</span></code> ）</p></li>
+<li><p>提供 <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">initDataSource()</span></code> 函数，将在切换数据源时触发（文件名或sheet名）。</p></li>
+<li><p>提供 <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">currentMessageCallback(originMsg,</span> <span class="pre">typeDesc)</span></code> 函数，将在切换数据源时触发（文件名或sheet名）。</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">originMsg</span></code> 为原始数据结构的 <code class="docutils literal notranslate"><span class="pre">HashMap</span></code> 结构</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">typeDesc</span></code> 为数据类型描述信息, <code class="docutils literal notranslate"><span class="pre">org.xresloader.core.data.dst.DataDstWriterNode.DataDstTypeDescriptor</span></code> 结构</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id6">
+<h2>从哪里读取字段映射信息？<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>字段映射信息我们除了可以直接使用 <a class="reference internal" href="xresloader_core.html"><span class="doc">转表引擎-xresloader</span></a> 的 <code class="docutils literal notranslate"><span class="pre">-m</span></code> 选项指定外，还支持多种读取来源。
+如果从文件中读取，我们是根据文件后缀来区分读取来源的。</p>
+<section id="id7">
+<h3>直接写在批量转表文件里（推荐）<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>在使用批量转表功能的时候建议直接写在批量转表配置里，详见 <a class="reference internal" href="xresconv.html"><span class="doc">批量转表工具</span></a></p>
+</section>
+<section id="excel-xls-xlsx">
+<h3>直接写在Excel里: 文件后缀.xls,.xlsx<a class="headerlink" href="#excel-xls-xlsx" title="Link to this heading"></a></h3>
+<p>当字段映射信息保存在Excel里时，scheme的名字就是表名（ <code class="docutils literal notranslate"><span class="pre">-m</span></code> 参数）。我们会先查找列明为 <code class="docutils literal notranslate"><span class="pre">字段或header</span></code> 、<code class="docutils literal notranslate"><span class="pre">主配置或major</span></code> 、<code class="docutils literal notranslate"><span class="pre">次配置或minor</span></code> 和 <code class="docutils literal notranslate"><span class="pre">补充配置或addition</span></code> 的字段，并依此列读取相应配置。如:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>简介</p></th>
+<th class="head"><p>主配置</p></th>
+<th class="head"><p>次配置</p></th>
+<th class="head"><p>补充配置</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DataSource</p></td>
+<td><p>配置数据源(文件路径,表名)</p></td>
+<td><p>资源转换示例.xlsx</p></td>
+<td><p>upgrade_10001</p></td>
+<td><p>3,1</p></td>
+<td><p>次配置为表名，补充配置为数据起始位置(行号, 列号)</p></td>
+</tr>
+<tr class="row-odd"><td><p>DataSource</p></td>
+<td><p>配置数据源(文件路径,表名)</p></td>
+<td></td>
+<td><p>upgrade_10002</p></td>
+<td><p>3,1</p></td>
+<td><p>次配置为表名，补充配置为数据起始位置(行号, 列号)</p></td>
+</tr>
+<tr class="row-even"><td><p>MacroSource</p></td>
+<td><p>元数据数据源(文件路径,表名)</p></td>
+<td><p>资源转换示例.xlsx</p></td>
+<td><p>macro</p></td>
+<td><p>2,1</p></td>
+<td><p>次配置为表名，补充配置为数据起始位置(行号, 列号)</p></td>
+</tr>
+<tr class="row-odd"><td><p>编程接口配置</p></td>
+<td colspan="5"></td>
+</tr>
+<tr class="row-even"><td><p>ProtoName</p></td>
+<td><p>协议描述名称</p></td>
+<td><p>role_upgrade_cfg</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>OutputFile</p></td>
+<td><p>输出文件</p></td>
+<td><p>role_upgrade_cfg.bin</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>KeyRow</p></td>
+<td><p>字段名描述行</p></td>
+<td><p>2</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>KeyCase</p></td>
+<td><p>字段名大小写</p></td>
+<td><p>不变</p></td>
+<td></td>
+<td></td>
+<td><p>大写/小写/不变</p></td>
+</tr>
+<tr class="row-even"><td><p>KeyWordSplit</p></td>
+<td><p>字段名分词字符</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>KeyPrefix</p></td>
+<td><p>字段名固定前缀</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>KeySuffix</p></td>
+<td><p>字段名固定后缀</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>KeyWordRegex</p></td>
+<td><p>分词规则</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>(判断规则,移除分词符号规则,前缀过滤规则)正则表达式</p></td>
+</tr>
+<tr class="row-even"><td><p>Encoding</p></td>
+<td><p>编码转换</p></td>
+<td><p>UTF-8</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="json-json">
+<h3>直接写在json文件里: 文件后缀.json<a class="headerlink" href="#json-json" title="Link to this heading"></a></h3>
+<p>当字段映射信息保存在Excel里时，我们认为json的根节点包含一个数组，下面时key-value类型数据，key为scheme的名字（ <code class="docutils literal notranslate"><span class="pre">-m</span></code> 参数）。里面还是Key-Value类型或Key-List类型。对应着每项配置。如：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;scheme_kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;DataSource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;资源转换示例.xlsx&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;kind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;3,1&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;MacroSource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;资源转换示例.xlsx&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;macro&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;2,1&quot;</span><span class="p">],</span>
+
+<span class="w">        </span><span class="nt">&quot;ProtoName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;role_cfg&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;OutputFile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;role_cfg.bin&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;KeyRow&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;KeyCase&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;小写&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;KeyWordSplit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;KeyWordRegex&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;[A-Z_\\$ \\t\\r\\n]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;[_\\$ \\t\\r\\n]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;[a-zA-Z_\\$]&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;Encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UTF-8&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="ini-ini-conf-cfg">
+<h3>直接写在ini文件里: 文件后缀.ini,.conf,.cfg<a class="headerlink" href="#ini-ini-conf-cfg" title="Link to this heading"></a></h3>
+<p>当字段映射信息保存在Excel里时，scheme的名字（ <code class="docutils literal notranslate"><span class="pre">-m</span></code> 参数）是section的名字，里面的数据是:</p>
+<ul class="simple">
+<li><p>Key名称.0 =&gt; Key名称的主配置</p></li>
+<li><p>Key名称.1 =&gt; Key名称的次配置</p></li>
+<li><p>Key名称.2 =&gt; Key名称的补充配置</p></li>
+</ul>
+<p>比如:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[scheme_kind]</span>
+<span class="na">DataSource.0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">资源转换示例.xlsx</span>
+<span class="na">DataSource.1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">kind</span>
+<span class="na">DataSource.2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3,1</span>
+
+<span class="na">MacroSource.0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">资源转换示例.xlsx</span>
+<span class="na">MacroSource.1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">macro</span>
+<span class="na">MacroSource.2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2,1</span>
+
+<span class="na">ProtoName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">role_cfg</span>
+<span class="na">OutputFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">role_cfg.bin</span>
+<span class="na">KeyRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span>
+<span class="na">KeyCase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">小写</span>
+<span class="na">KeyWordSplit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">_</span>
+<span class="na">KeyWordRegex.0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">[A-Z_\$ \t\r\n]</span>
+<span class="na">KeyWordRegex.1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">[_\$ \t\r\n]</span>
+<span class="na">KeyWordRegex.2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">[a-zA-Z_\$]</span>
+<span class="na">Encoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">UTF-8</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>完整的样例<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<p>以上配置选项在 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 中有完整的示例，并且在。 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 的 <code class="docutils literal notranslate"><span class="pre">README.md</span></code> 中有举例说明。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="xresloader_core.html" class="btn btn-neutral float-left" title="转表引擎-xresloader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="output_format.html" class="btn btn-neutral float-right" title="数据输出和数据加载" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, xresloader。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

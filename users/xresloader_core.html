@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>转表引擎-xresloader &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=1fb93e06" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=26a91e76"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="协议-&gt;Excel数据映射和支持的配置读取源 （scheme）" href="data_mapping.html" />
+    <link rel="prev" title="快速上手" href="quick_start.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">快速上手</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">转表引擎-xresloader</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">xresloader-可用参数列表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">批处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">直接使用xresloader</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresconv.html">批量转表工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_types.html">数据类型说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">转表引擎-xresloader</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/users/xresloader_core.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="xresloader">
+<h1>转表引擎-xresloader<a class="headerlink" href="#xresloader" title="Link to this heading"></a></h1>
+<p>在 <a class="reference internal" href="quick_start.html"><span class="doc">快速上手</span></a> 章节里我们提供了一个基本的转表使用流程。整个流程图示如下：</p>
+<img alt="../_images/xresconv_process.png" src="../_images/xresconv_process.png" />
+<p>无论GUI工具还是CLI工具还是数据和配置，最终都是汇聚到调用 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 转表引擎命令进行汇总和执行转换。
+本章节主要是针对 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 转表引擎的说明。</p>
+<section id="id2">
+<h2>xresloader-可用参数列表<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数选项</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-h</span> <span class="pre">--help</span></code></p></td>
+<td><p>帮助信息</p></td>
+<td><p>显示帮助和支持的参数列表</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">--output-type</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">输出类型</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ bin（默认值）</div>
+<div class="line">+ lua</div>
+<div class="line">+ msgpack</div>
+<div class="line">+ json</div>
+<div class="line">+ xml</div>
+<div class="line">+ javascript</div>
+<div class="line">+ js</div>
+<div class="line">+ ue-csv (&gt;=2.0.0版本)</div>
+<div class="line">+ ue-json (&gt;=2.0.0版本)</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">--proto</span></code></p></td>
+<td><p>协议描述类型</p></td>
+<td><p>protobuf(默认值),capnproto(暂未实现),flatbuffer(暂未实现)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">--proto-file</span></code></p></td>
+<td><p>协议描述文件</p></td>
+<td><p>从 2.14.0-rc2 版本开始允许传入多个</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">--output-dir</span></code></p></td>
+<td><p>输出目录</p></td>
+<td><p>默认为当前目录</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">--data-src-dir</span></code></p></td>
+<td><p>数据源根目录</p></td>
+<td><p>默认为当前目录</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">--src-file</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">数据源描述文件</div>
+<div class="line">(scheme)</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">后缀可以是 .xls, .xlsx, .cvs, .xlsm</div>
+<div class="line">.ods, .ini, .cfg, .conf, .json</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">--src-meta</span></code></p></td>
+<td><p>数据源描述</p></td>
+<td><p>可多个</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">--version</span></code></p></td>
+<td><p>打印版本号</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">--rename</span></code></p></td>
+<td><p>重命名输出文件名</p></td>
+<td><p>正则表达式 （如：<code class="docutils literal notranslate"><span class="pre">/(?i)\.bin$/\.lua/</span></code> ）</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--require-mapping-all</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">开启所有字段映射检查</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">开启所有字段映射检查后，转出结构中所有的字段都必须配置映射关</div>
+<div class="line">系，数组字段至少要有一个元素</div>
+<div class="line"><br /></div>
+<div class="line">+ 版本 &gt;=2.10.0</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--enable-alias-mapping</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">开启别名匹配</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">映射Excel列到目标数据结构，允许使用别名</div>
+<div class="line"><br /></div>
+<div class="line">+ 版本 &gt;=2.10.0</div>
+<div class="line">+ 2.17.1 版本前默认开启</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--disable-alias-mapping</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">关闭字段映射时使用别名</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ 2.18.0版本后默认开启</div>
+<div class="line">+ 版本 &gt;=2.18.0</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">--const-print</span></code></p></td>
+<td><p>输出协议描述中的常量</p></td>
+<td><p>参数为字符串，表示输出的文件名</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-i</span> <span class="pre">--option-print</span></code></p></td>
+<td><p>输出协议描述中的选项</p></td>
+<td><p>参数为字符串，表示输出的文件名</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-r</span> <span class="pre">--descriptor-print</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">输出所有描述数据</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">参数为字符串，表示输出的文件名</div>
+<div class="line"><br /></div>
+<div class="line">+ 版本 &gt;=2.11.0-rc2</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-a</span> <span class="pre">--data-version</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">设置数据版本号</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">参数为字符串，表示输出的数据的data_ver字段。</div>
+<div class="line">如果不设置将按执行时间自动生成一个。</div>
+<div class="line">会写出到转出数据的header中。</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--pretty</span></code></p></td>
+<td><p>格式化输出</p></td>
+<td><p>参数为整数，0代表关闭美化输出功能，大于0表示格式化时的缩进量</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--enable-excel-formular</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">开启Excel公式实时计算</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">(2.11-RC3版本前默认开启，之后默认关闭)</div>
+<div class="line">2003版本的excel（*.xls）文件使用公式会大幅减慢转表速度</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--disable-excel-formular</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">关闭Excel公式支持</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">(2.11-RC3版本后默认开启，之前默认关闭)</div>
+<div class="line">2003版的excel（*.xls）关闭公式会大幅加快转表速度</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-empty-list</span></code></p></td>
+<td><p>(废弃) 禁止空列表项</p></td>
+<td><p>默认开启。自动删除Excel中的空数据，不会转出到输出文件中</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--enable-empty-list</span></code></p></td>
+<td><p>(废弃) 开启空列表项</p></td>
+<td><p>开启空列表项。未填充数据将使用默认值，并转出到输出文件中</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--list-strip-all-empty</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">移除数组空项</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">(默认) 移除数组空项，自动删除Excel中的未填充数据，不会转出到</div>
+<div class="line">输出文件中</div>
+<div class="line"><br /></div>
+<div class="line">+ 版本 &gt;=2.11.0-rc3</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--list-keep-empty</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">保留全部数组空项</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">保留全部数组空项，未填充数据将使用默认的空值来填充，并转出到</div>
+<div class="line">输出文件中</div>
+<div class="line"><br /></div>
+<div class="line">+ 版本 &gt;=2.11.0-rc3</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--list-strip-empty-tail</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">移除数组尾部空项</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">移除数组尾部空项，自动删除尾部的未填充数据，其他的未填充数据</div>
+<div class="line">将使用默认的空值，并转出到输出文件中</div>
+<div class="line"><br /></div>
+<div class="line">+ 版本 &gt;=2.11.0-rc3</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--enable-string-macro</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">设置Macro表也对字符串类型生效</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">可以通过全局开启此选项，特定表使用 <cite>–disable-string-macro</cite></div>
+<div class="line">来实现默认开启字符串文本替换，特定表不替换。</div>
+<div class="line"><br /></div>
+<div class="line">+ 版本 &gt;=2.11.0-rc3</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--disable-string-macro</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">设置Macro表也对字符串类型不生效</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">+ 默认生效</div>
+<div class="line">+ 版本 &gt;=2.11.0-rc3</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--stdin</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">通过标准输入批量转表</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">通过标准输入批量转表，参数和上面的一样，每行都执行一次转表。</div>
+<div class="line">字符串参数可以用单引号或双引号包裹，但是都不支持转义。</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--lua-global</span></code></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">lua输出写到全局表</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">输出协议描述中的常量到Lua脚本时，同时导入符号到全局表_G中</div>
+<div class="line">（仅对常量导出有效）</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--lua-module</span></code></p></td>
+<td><p>lua输出使用module写出</p></td>
+<td><p>输出Lua脚本时，使用 module(模块名, package.seeall) 导出到全局</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--xml-root</span></code></p></td>
+<td><p>xml输出的根节点tag</p></td>
+<td><p>输出格式为xml时的根节点的TagName</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--javascript-export</span></code></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">导出javascript数据的模式</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">可选项：</div>
+<div class="line"><br /></div>
+<div class="line">* nodejs: 使用兼容nodejs的exports</div>
+<div class="line">* amd: 使用兼容amd的define</div>
+<div class="line">* 其他: 写入全局（window或global）</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--javascript-global</span></code></p></td>
+<td><p>导出javascript全局空间</p></td>
+<td><p>导出数据到全局时，可以指定写入的名字空间</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--ignore-unknown-dependency</span></code></p></td>
+<td><p>忽略未知的协议的依赖</p></td>
+<td><p>忽略未知的输入协议的依赖项(&gt;=2.9.0版本)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--validator-rules</span></code></p></td>
+<td><p>指定自定义验证器配置文件路径</p></td>
+<td><p>指定自定义验证器配置文件路径(YAML，&gt;=2.14.0-rc3版本)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-data-validator</span></code></p></td>
+<td><p>允许忽略数据验证错误</p></td>
+<td><p>(&gt;=2.17.0版本)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--data-source-lru-cache-rows</span></code></p></td>
+<td><p>数据源的LRU Cache行数</p></td>
+<td><p>仅缓存流式索引</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tolerate-max-empty-rows</span></code></p></td>
+<td><p>连续空行检测的行数</p></td>
+<td><p>设置连续空行检测的行数(&gt;=2.14.1版本) ，大量的连续空行通常是误操作</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--ignore-field-tags</span></code></p></td>
+<td><p>字段Tag</p></td>
+<td><p>忽略指定tag的字段转出(&gt;=2.19.0版本)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h2>批处理<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>如果我们需要一次性转出多个表，可以使用 <code class="docutils literal notranslate"><span class="pre">--stdin</span></code> 选项，然后再标准输入里输入其他的配置参数。这时候我们认为每个非空行都是一个数据转换组。</p>
+<p>比如在 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 的bash命令中:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">    -t lua -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;     -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; --pretty 2 -i kind.desc.lua</span>
+<span class="s1">    -t json -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;    -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; --pretty 2 -i kind.desc.json</span>
+<span class="s1">    -t json -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;    -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -s &#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39; -m scheme_kind -n &quot;/(?i)\.bin$/\.json/&quot;</span>
+<span class="s1">    -t xml -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;     -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -s &#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39; -m scheme_kind -n &quot;/(?i)\.bin$/\.xml/&quot;</span>
+<span class="s1">    -t msgpack -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39; -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -s &#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39; -m scheme_kind -n &quot;/(?i)\.bin$/\.msgpack.bin/&quot;</span>
+<span class="s1">    -t js -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;      -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; --pretty 2 -s &#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39; -m scheme_kind -n &quot;/(?i)\.bin$/\.js/&quot; --javascript-global sample</span>
+<span class="s1">    -t js -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;      -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; --pretty 2 -m DataSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|kind|3,1 -m MacroSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|macro|2,1 -m ProtoName=role_cfg -m OutputFile=role_cfg.n.js -m KeyRow=2 -m KeyCase=lower -m KeyWordSplit=_ -m &quot;KeyWordRegex=[A-Z_\$ \t\r\n]|[_\$ \t\r\n]|[a-zA-Z_\$]&quot; --javascript-export nodejs</span>
+<span class="s1">    -t js -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;      -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; --pretty 2 -s &#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39; -m scheme_kind -n &quot;/(?i)\.bin$/\.amd\.js/&quot; --javascript-export amd</span>
+<span class="s1">    -t lua -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;     -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; --pretty 2 --validator-rules custom_validator.yaml -m DataSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|arr_in_arr|3,1 -m MacroSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=arr_in_arr_cfg.lua -m KeyRow=2 -o proto_v3</span>
+<span class="s1">    -t bin -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;     -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; --validator-rules custom_validator.yaml -m DataSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|arr_in_arr|3,1 -m MacroSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=arr_in_arr_cfg.bin -m KeyRow=2 -o proto_v3</span>
+<span class="s1">    -t json -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;    -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -s &#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39; --validator-rules custom_validator.yaml -m scheme_upgrade -n &quot;/(?i)\.bin$/\.json/&quot;</span>
+<span class="s1">    -t lua -p protobuf -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39;     -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -s &#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39; --validator-rules custom_validator.yaml -m scheme_upgrade -n &quot;/(?i)\.bin$/\.lua/&quot;</span>
+<span class="s1">    -t ue-csv -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39; -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -c KindConst.csv</span>
+<span class="s1">    -t ue-json -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39; -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -c KindConst.json</span>
+<span class="s1">    -t ue-csv -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39; -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -m DataSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|arr_in_arr|3,1 --validator-rules custom_validator.yaml -m MacroSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=ArrInArrCfg.csv -m KeyRow=2 -m UeCfg-CodeOutput=|Public/Config|Private/Config</span>
+<span class="s1">    -t ue-json -o &#39;</span><span class="nv">$proto_dir</span><span class="s1">&#39; -f &#39;</span><span class="nv">$proto_dir</span>/kind.pb<span class="s1">&#39; -m DataSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|arr_in_arr|3,1 --validator-rules custom_validator.yaml -m MacroSource=&#39;</span><span class="nv">$XLSX_FILE</span><span class="s1">&#39;|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=ArrInArrCfg.json -m KeyRow=2 -m UeCfg-CodeOutput=|Public/Config|Private/Config</span>
+<span class="s1">&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>java<span class="w"> </span>-client<span class="w"> </span>-jar<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$XRESLOADER</span><span class="s2">&quot;</span><span class="w"> </span>--stdin<span class="p">;</span>
+</pre></div>
+</div>
+<p>这里就有10项转出文件。批处理有个优势是java在运行时会对字节码做JIT，批处理则会只对字节码编译一次，能比每个转出文件运行一次命令快很多。</p>
+<div class="line-block">
+<div class="line">我们之前的一个项在profile时发现每次运行java编译时间大约在1.5s，JIT编译前（一般Excel数据行的前10行）转表运行时间大约是0.5s，JIT编译后（即便是成百上千行数据行）运行时间大约是0.2s。</div>
+<div class="line">所以增加了批量转表功能，总体上把转表时间缩减到了分开执行的10%。这样我们在最后转出50多个表的时候也只需要几秒钟。</div>
+</div>
+</section>
+<section id="id4">
+<h2>直接使用xresloader<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>直接使用转表引擎（ <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> ）的示例可以参见 <a class="reference external" href="https://github.com/xresloader/xresloader/tree/main/sample">xresloader sample</a> 。里面有几乎所有的使用方法。
+包括但不限于转出到代码、转出枚举量、使用proto2、使用proto3、转出加载代码、批量转出等等。</p>
+<p>Windows下的执行入口是 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/gen_sample_output.bat">gen_sample_output.bat</a> 或 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/gen_sample_output.ps1">gen_sample_output.ps1</a> 。 Linux/macOS/BSD 的执行入口是 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/gen_sample_output.sh">gen_sample_output.sh</a> 。</p>
+<p>使用前需要先使用 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/gen_protocol.py">gen_protocol.py</a> 生成proto v2的协议描述文件和使用 <a class="reference external" href="https://github.com/xresloader/xresloader/blob/main/sample/gen_protocol_v3.py">gen_protocol_v3.py</a> 生成proto v3的协议描述文件。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="quick_start.html" class="btn btn-neutral float-left" title="快速上手" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="data_mapping.html" class="btn btn-neutral float-right" title="协议-&gt;Excel数据映射和支持的配置读取源 （scheme）" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, xresloader。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

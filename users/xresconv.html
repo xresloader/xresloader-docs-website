@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>批量转表工具 &mdash; xresloader-document https://xresloader.atframe.work 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=1fb93e06" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=26a91e76"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="关于此文档" href="../about.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="数据类型说明" href="data_types.html" />
+    <link rel="prev" title="数据输出和数据加载" href="output_format.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            xresloader-document
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">用户文档</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">下载工具集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">快速上手</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xresloader_core.html">转表引擎-xresloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_mapping.html">协议-&gt;Excel数据映射和支持的配置读取源 （scheme）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_format.html">数据输出和数据加载</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">批量转表工具</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#guicli">批量转表 - GUI和CLI工具示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">批量转表 - 配置示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">批量转表 - 配置结构规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cli">CLI批量转表工具 - 启动参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gui">GUI批量转表工具 - 启动参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">GUI批量转表工具 - 特殊事件</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gui-root-gui-set-name">GUI事件 - 显示转表项名称 <code class="docutils literal notranslate"><span class="pre">//root/gui/set_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gui-root-gui-on-before-convert-root-gui-on-after-convert">GUI事件 - 转表前事件和转表成功后事件 <code class="docutils literal notranslate"><span class="pre">//root/gui/on_before_convert</span></code> 和 <code class="docutils literal notranslate"><span class="pre">//root/gui/on_after_convert</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">GUI批量转表工具 - 自定义按钮</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">GUI自定义按钮 - 基本配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">GUI自定义按钮 - 自定义脚本（点击回调）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">GUI自定义按钮 - 按钮样式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_types.html">数据类型说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xres_code_generator.html">使用 xres-code-generator 生成解析代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_usage.html">高级功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem_and_tools.html">生态和周边工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发文档</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/dependency.html">环境和依赖项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/build.html">编译和打包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/pkg_source.html">使用国内的源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresloader.html">转表引擎设计模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/design_xresconv.html">批量转表工具设计模型</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">关于 xresloader</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">xresloader-document</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">批量转表工具</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/users/xresconv.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>批量转表工具<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="guicli">
+<h2>批量转表 - GUI和CLI工具示例<a class="headerlink" href="#guicli" title="Link to this heading"></a></h2>
+<p>在实际项目中，我们一般会同时涉及几十甚至上百张表。为了统一配置，我们提供了批量转表工具。
+批量转表分为 命令行批量转表工具-<a class="reference external" href="https://github.com/xresloader/xresconv-cli">xresconv-cli</a> 和 GUI批量转表工具-<a class="reference external" href="https://github.com/xresloader/xresconv-gui">xresconv-gui</a> 两个工具。</p>
+<p>前者用于服务器和客户端发布流程的集成，后者主要提供给临时转表和策划验证数据时可以拿来转出部分数据。
+这两个工具都以 <a class="reference external" href="xresconv-conf">批量转表配置模板仓库-xresconv-conf</a> 中的配置为配置规范。</p>
+<img alt="../_images/quick_start_cli_sample.gif" src="../_images/quick_start_cli_sample.gif" />
+<p>以上为 命令行批量转表工具-<a class="reference external" href="https://github.com/xresloader/xresconv-cli">xresconv-cli</a> 的输出示例。</p>
+<img alt="../_images/quick_start_gui_sample.gif" src="../_images/quick_start_gui_sample.gif" />
+<p>以上为 GUI批量转表工具-<a class="reference external" href="https://github.com/xresloader/xresconv-gui">xresconv-gui</a> 的输出示例。</p>
+</section>
+<section id="id3">
+<h2>批量转表 - 配置示例<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>我们在 <a class="reference internal" href="quick_start.html#quick-start-configure-sheme"><span class="std std-ref">快速上手-配置批量转表配置文件</span></a> 章节里也提供了一个简单的例子：</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;root&gt;</span>
+<span class="w">    </span><span class="nt">&lt;global&gt;</span>
+<span class="w">        </span><span class="nt">&lt;work_dir</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;工作目录，相对于当前xml的目录，我们的Excel文件放在这里&quot;</span><span class="nt">&gt;</span>.<span class="nt">&lt;/work_dir&gt;</span>
+<span class="w">        </span><span class="nt">&lt;xresloader_path</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;指向前面下载的 转表工具-xresloader，相对于当前xml的目录&quot;</span><span class="nt">&gt;</span>../xresloader/target/xresloader-2.9.0.jar<span class="nt">&lt;/xresloader_path&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;proto</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;协议类型，-p选项&quot;</span><span class="nt">&gt;</span>protobuf<span class="nt">&lt;/proto&gt;</span>
+<span class="w">        </span><span class="nt">&lt;output_type</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;输出类型，对应-t选项，输出二进制&quot;</span><span class="nt">&gt;</span>bin<span class="nt">&lt;/output_type&gt;</span>
+<span class="w">        </span><span class="nt">&lt;output_type</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;多种输出时可以额外定义某个节点的重命名规则&quot;</span><span class="w"> </span><span class="na">rename=</span><span class="s">&quot;/(?i)\.bin$/\.json/&quot;</span><span class="nt">&gt;</span>json<span class="nt">&lt;/output_type&gt;</span>
+<span class="w">        </span><span class="nt">&lt;proto_file</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;协议描述文件，-f选项&quot;</span><span class="nt">&gt;</span>kind.pb<span class="nt">&lt;/proto_file&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;output_dir</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;输出目录，-o选项&quot;</span><span class="nt">&gt;</span>../sample-data<span class="nt">&lt;/output_dir&gt;</span>
+<span class="w">        </span><span class="nt">&lt;data_src_dir</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;数据源目录，-d选项&quot;</span><span class="nt">&gt;&lt;/data_src_dir&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;java_option</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;java选项-最大内存限制2GB&quot;</span><span class="nt">&gt;</span>-Xmx2048m<span class="nt">&lt;/java_option&gt;</span>
+<span class="w">        </span><span class="nt">&lt;java_option</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;java选项-客户端模式&quot;</span><span class="nt">&gt;</span>-client<span class="nt">&lt;/java_option&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;default_scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;KeyRow&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;默认scheme模式参数-Key行号，对应上面Id、Level、CostType、CostValue那一行&quot;</span><span class="nt">&gt;</span>2<span class="nt">&lt;/default_scheme&gt;</span>
+<span class="w">        </span><span class="nt">&lt;option</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;全局自定义选项&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;美化文本输出，缩进为2个空格&quot;</span><span class="nt">&gt;</span>--pretty<span class="w"> </span>2<span class="nt">&lt;/option&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/global&gt;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nt">&lt;groups</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;分组信息（可选）&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;group</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;client&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;客户端&quot;</span><span class="nt">&gt;&lt;/group&gt;</span>
+<span class="w">        </span><span class="nt">&lt;group</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;server&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;服务器&quot;</span><span class="nt">&gt;&lt;/group&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/groups&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;类信息（用于GUI工具的树形结构分类显示）&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;tree</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;all_cats&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;大分类&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;tree</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;kind&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;角色配置&quot;</span><span class="nt">&gt;&lt;/tree&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/tree&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/category&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;list&gt;</span>
+<span class="w">        </span><span class="nt">&lt;item</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;升级表&quot;</span><span class="w"> </span><span class="na">cat=</span><span class="s">&quot;kind&quot;</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;client server&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DataSource&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;数据源(文件名|表名|数据起始行号,数据起始列号)&quot;</span><span class="nt">&gt;</span>role_tables.xlsx|upgrade_10001|3,1<span class="nt">&lt;/scheme&gt;</span>
+<span class="w">            </span><span class="nt">&lt;scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ProtoName&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;协议名&quot;</span><span class="nt">&gt;</span>role_upgrade_cfg<span class="nt">&lt;/scheme&gt;</span>
+<span class="w">            </span><span class="nt">&lt;scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;OutputFile&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;输出文件名&quot;</span><span class="nt">&gt;</span>role_upgrade_cfg.bin<span class="nt">&lt;/scheme&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/list&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2>批量转表 - 配置结构规范<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cm">&lt;!-- &lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;helper/view.xsl&quot;?&gt; --&gt;</span>
+<span class="nt">&lt;root&gt;</span>
+<span class="w">    </span><span class="nt">&lt;include</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;可以包含其他文件配置，然后本文件里的配置将会覆盖或合并配置，相对于当前xml的目录&quot;</span><span class="nt">&gt;</span>sample.xml<span class="nt">&lt;/include&gt;</span>
+<span class="w">    </span><span class="nt">&lt;global&gt;</span>
+<span class="w">        </span><span class="nt">&lt;work_dir</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;工作目录，相对于当前xml的目录&quot;</span><span class="nt">&gt;</span>../xresloader/sample<span class="nt">&lt;/work_dir&gt;</span>
+<span class="w">        </span><span class="nt">&lt;xresloader_path</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;xresloader地址，相对于当前xml的目录&quot;</span><span class="nt">&gt;</span>../target/xresloader-2.9.0.jar<span class="nt">&lt;/xresloader_path&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;proto</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;协议类型，-p选项&quot;</span><span class="nt">&gt;</span>protobuf<span class="nt">&lt;/proto&gt;</span>
+<span class="w">        </span><span class="nt">&lt;output_type</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;输出类型，-t选项，支持多个同时配置多种输出&quot;</span><span class="nt">&gt;</span>bin<span class="nt">&lt;/output_type&gt;</span>
+<span class="w">        </span><span class="nt">&lt;output_type</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;多种输出时可以额外定义某个节点的重命名规则&quot;</span><span class="w"> </span><span class="na">rename=</span><span class="s">&quot;/(?i)\.bin$/\.json/&quot;</span><span class="nt">&gt;</span>json<span class="nt">&lt;/output_type&gt;</span>
+<span class="w">        </span><span class="nt">&lt;output_type</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;可以通过指定class来限制输出的规则&quot;</span><span class="w"> </span><span class="na">rename=</span><span class="s">&quot;/(?i)\.bin$/\.csv/&quot;</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;client&quot;</span><span class="w"> </span><span class="nt">&gt;</span>ue-csv<span class="nt">&lt;/output_type&gt;</span>
+<span class="w">        </span><span class="cm">&lt;!-- output_type 里的class标签对应下面item里的class标签，均可配置多个，多个用空格隔开，任意一个class匹配都会启用这个输出 --&gt;</span>
+<span class="w">        </span><span class="nt">&lt;proto_file</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;协议描述文件，-f选项&quot;</span><span class="nt">&gt;</span>proto_v3/kind.pb<span class="nt">&lt;/proto_file&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;output_dir</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;输出目录，-o选项&quot;</span><span class="nt">&gt;&lt;/output_dir&gt;</span>
+<span class="w">        </span><span class="nt">&lt;data_src_dir</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;数据源目录，-d选项&quot;</span><span class="nt">&gt;&lt;/data_src_dir&gt;</span>
+<span class="w">        </span><span class="nt">&lt;data_version</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;数据版本号，留空则自动生成&quot;</span><span class="nt">&gt;</span>1.0.0.0<span class="nt">&lt;/data_version&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;rename</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;重命名规则，正则表达式：/搜索模式/替换内容/，对应xresloader的-n选项, 如果在output_type里设置了rename，以output_type里的rename为准，否则使用这里的全局配置&quot;</span><span class="w"> </span><span class="na">placeholder=</span><span class="s">&quot;/(?i)\.bin$/\.json/&quot;</span><span class="nt">&gt;&lt;/rename&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;java_option</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;java选项-最大内存限制2GB&quot;</span><span class="nt">&gt;</span>-Xmx2048m<span class="nt">&lt;/java_option&gt;</span>
+<span class="w">        </span><span class="nt">&lt;java_option</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;java选项-客户端模式&quot;</span><span class="nt">&gt;</span>-client<span class="nt">&lt;/java_option&gt;</span>
+
+<span class="w">        </span><span class="nt">&lt;default_scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;KeyRow&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;默认scheme模式参数-Key行号&quot;</span><span class="nt">&gt;</span>2<span class="nt">&lt;/default_scheme&gt;</span>
+<span class="w">        </span><span class="nt">&lt;default_scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;MacroSource&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;默认scheme模式参数-Key行号&quot;</span><span class="nt">&gt;</span>资源转换示例.xlsx|macro|2,1<span class="nt">&lt;/default_scheme&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/global&gt;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nt">&lt;groups</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;分组信息&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;group</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;client&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;客户端&quot;</span><span class="nt">&gt;&lt;/group&gt;</span>
+<span class="w">        </span><span class="nt">&lt;group</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;server&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;服务器&quot;</span><span class="nt">&gt;&lt;/group&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/groups&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;category</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;类信息&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;tree</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;all_cats&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;大分类&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;tree</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;kind&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;角色配置&quot;</span><span class="nt">&gt;&lt;/tree&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/tree&gt;</span>
+<span class="w">        </span><span class="nt">&lt;tree</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;test&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;测试&quot;</span><span class="nt">&gt;&lt;/tree&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/category&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;list&gt;</span>
+<span class="w">        </span><span class="nt">&lt;item</span><span class="w"> </span><span class="na">file=</span><span class="s">&quot;资源转换示例.xlsx&quot;</span><span class="w"> </span><span class="na">scheme=</span><span class="s">&quot;scheme_kind&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;人物表&quot;</span><span class="w"> </span><span class="na">cat=</span><span class="s">&quot;kind&quot;</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;server&quot;</span><span class="nt">&gt;&lt;/item&gt;</span>
+<span class="w">        </span><span class="nt">&lt;item</span><span class="w"> </span><span class="na">file=</span><span class="s">&quot;资源转换示例.xlsx&quot;</span><span class="w"> </span><span class="na">scheme=</span><span class="s">&quot;scheme_upgrade&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;升级表&quot;</span><span class="w"> </span><span class="na">cat=</span><span class="s">&quot;kind&quot;</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;server&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;option</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;自定义选项&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;移除空列表项&quot;</span><span class="nt">&gt;</span>--disable-empty-list<span class="nt">&lt;/option&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/item&gt;</span>
+<span class="w">        </span><span class="nt">&lt;item</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;嵌套数组测试&quot;</span><span class="w"> </span><span class="na">cat=</span><span class="s">&quot;test&quot;</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;client server&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DataSource&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;数据源(文件名|表名|数据起始行号,数据起始列号)&quot;</span><span class="nt">&gt;</span>资源转换示例.xlsx|arr_in_arr|3,1<span class="nt">&lt;/scheme&gt;</span>
+<span class="w">            </span><span class="nt">&lt;scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ProtoName&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;协议名&quot;</span><span class="nt">&gt;</span>arr_in_arr_cfg<span class="nt">&lt;/scheme&gt;</span>
+<span class="w">            </span><span class="nt">&lt;scheme</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;OutputFile&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;输出文件名&quot;</span><span class="nt">&gt;</span>arr_in_arr_cfg.bin<span class="nt">&lt;/scheme&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/list&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;gui&gt;</span>
+<span class="w">        </span><span class="nt">&lt;set_name</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;这个脚本用于修改树形节点的显示数据,便于策划核对具体的表名&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span>if<span class="w"> </span>(item_data.file)<span class="w"> </span>{
+<span class="w">                </span>item_data.name<span class="w"> </span>+=<span class="w"> </span>&quot;<span class="w"> </span>(&quot;<span class="w"> </span>+<span class="w"> </span>item_data.file.match(/([^.]+)\.\w+$/)[1]<span class="w"> </span>+<span class="w"> </span>&quot;)&quot;
+<span class="w">            </span>}
+<span class="w">        </span><span class="nt">&lt;/set_name&gt;</span>
+<span class="w">        </span><span class="nt">&lt;on_before_convert</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="w"> </span><span class="na">timeout=</span><span class="s">&quot;15000&quot;</span><span class="w"> </span><span class="na">description=</span><span class="s">&quot;事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span>//<span class="w"> </span>这里可以执行nodejs代码，比如下面是Windows平台执行<span class="w"> </span>echo<span class="w"> </span>work_dir
+<span class="w">            </span>var<span class="w"> </span>os<span class="w"> </span>=<span class="w"> </span>require(&quot;os&quot;);
+<span class="w">            </span>var<span class="w"> </span>spawn<span class="w"> </span>=<span class="w"> </span>require(&quot;child_process&quot;).spawn;
+<span class="w">            </span>if<span class="w"> </span>(os.type().substr(0,<span class="w"> </span>7).toLowerCase()<span class="w"> </span>==<span class="w"> </span>&quot;windows&quot;)<span class="w"> </span>{
+<span class="w">                </span>var<span class="w"> </span>exec<span class="w"> </span>=<span class="w"> </span>spawn(&quot;cmd&quot;,<span class="w"> </span>[&quot;/c&quot;,<span class="w"> </span>&quot;echo<span class="w"> </span>&quot;<span class="w"> </span>+<span class="w"> </span>work_dir],<span class="w"> </span>{
+<span class="w">                    </span>cwd:<span class="w"> </span>work_dir,
+<span class="w">                    </span>encoding:<span class="w"> </span>&#39;utf-8&#39;
+<span class="w">                </span>});
+<span class="w">                </span>exec.stdout.on(&quot;data&quot;,<span class="w"> </span>function(data)<span class="w"> </span>{
+<span class="w">                    </span>log_info(data);
+<span class="w">                </span>});
+<span class="w">                </span>exec.stderr.on(&quot;data&quot;,<span class="w"> </span>function(data)<span class="w"> </span>{
+<span class="w">                    </span>log_error(data);
+<span class="w">                </span>});
+<span class="w">                </span>exec.on(&quot;error&quot;,<span class="w"> </span>function(data)<span class="w"> </span>{
+<span class="w">                    </span>log_error(data.toString());
+<span class="w">                    </span>resolve();
+<span class="w">                    </span>//<span class="w"> </span>reject(&quot;执行失败&quot;<span class="w"> </span>+<span class="w"> </span>data.toString());
+<span class="w">                </span>});
+<span class="w">                </span>exec.on(&quot;exit&quot;,<span class="w"> </span>function(code)<span class="w"> </span>{
+<span class="w">                    </span>if<span class="w"> </span>(code<span class="w"> </span>===<span class="w"> </span>0)<span class="w"> </span>{
+<span class="w">                        </span>resolve();
+<span class="w">                    </span>}<span class="w"> </span>else<span class="w"> </span>{
+<span class="w">                        </span>resolve();
+<span class="w">                        </span>//<span class="w"> </span>reject(&quot;执行失败&quot;);
+<span class="w">                    </span>}
+<span class="w">                </span>});
+<span class="w">            </span>}<span class="w"> </span>else<span class="w"> </span>{
+<span class="w">                </span>resolve();
+<span class="w">            </span>}
+<span class="w">        </span><span class="nt">&lt;/on_before_convert&gt;</span>
+<span class="w">        </span><span class="nt">&lt;on_after_convert</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="w"> </span><span class="na">timeout=</span><span class="s">&quot;60000&quot;</span><span class="w"> </span><span class="na">description=</span><span class="s">&quot;事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span>//<span class="w"> </span>同上
+<span class="w">            </span>alert_warning(&quot;自定义转表完成后事件，可以执行任意nodejs脚本&quot;);
+<span class="w">            </span>resolve();
+<span class="w">        </span><span class="nt">&lt;/on_after_convert&gt;</span>
+<span class="w">        </span><span class="nt">&lt;script</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;自定义脚本&quot;</span><span class="w"> </span><span class="na">desc=</span><span class="s">&quot;用于自定义按钮&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span>//<span class="w"> </span>同上
+<span class="w">            </span>resolve();
+<span class="w">        </span><span class="nt">&lt;/script&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/gui&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</pre></div>
+</div>
+<p>如上是所有支持的标签的说明及示例配置。</p>
+<p>除了前面章节提及过的字段外，还有一些特别的配置。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/include</span></code> : 包含其他配置文件。相当于把其他配置文件离得配置复制过来。然后这个文件里有重复得配置则覆盖之。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/global/work_dir</span></code> : 运行 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 的目录。如果是相对目录的话相对于xml配置文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/global/xresloader_path</span></code> : <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 的jar包的路径。如果是相对目录的话相对于xml配置文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/global/java_option</span></code> : 用于传给java命令。所有的条目都会附加到java选项种。比如示例种的 <code class="docutils literal notranslate"><span class="pre">-Xmx2048m</span></code> 用于设置最大堆为2GB，用于对于比较大的Excel导表的时候可能会临时占用较高内存。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/global/default_scheme</span></code> : 默认的导表映射关系的配置（详见 <a class="reference internal" href="data_mapping.html#data-mapping-available-options"><span class="std std-ref">可用的配置项</span></a> ）。对所有转换条目都会附加这里面的配置项。可多个。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/list/item/scheme</span></code> : 导表映射关系的配置（详见 <a class="reference internal" href="data_mapping.html#data-mapping-available-options"><span class="std std-ref">可用的配置项</span></a> ）。如果和上面 <code class="docutils literal notranslate"><span class="pre">default_scheme</span></code>  冲突则会覆盖默认配置，仅对这个条目生效。可多个。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/list/item/option</span></code> : 运行 <a class="reference external" href="https://github.com/xresloader/xresloader">xresloader</a> 的额外附加参数（详见 <a class="reference internal" href="xresloader_core.html"><span class="doc">转表引擎-xresloader</span></a> ）。比如使用 <code class="docutils literal notranslate"><span class="pre">--enable-empty-list</span></code> 可以不移除Excel里的空数据，仅对这个条目生效。可多个。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/global/output_type[class]</span></code> : 如果 <code class="docutils literal notranslate"><span class="pre">output_type</span></code> 中配置了 <code class="docutils literal notranslate"><span class="pre">class</span></code> 属性，则这个输出类型仅对 <code class="docutils literal notranslate"><span class="pre">//root/list/item</span></code> 中也配置了同名 <code class="docutils literal notranslate"><span class="pre">class</span></code> 属性的条目生效。
+此特性可用于比如让 <code class="docutils literal notranslate"><span class="pre">UE-Csv</span></code> 或 <code class="docutils literal notranslate"><span class="pre">UE-Json</span></code> 的输出仅对客户端配置生效。<code class="docutils literal notranslate"><span class="pre">class</span></code> 属性可以设置多个，多个用空格隔开，配置多个时任意一个匹配都会启用 <code class="docutils literal notranslate"><span class="pre">output_type</span></code>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//root/global/output_type[tag]</span></code> : 如果 <code class="docutils literal notranslate"><span class="pre">output_type</span></code> 中配置了 <code class="docutils literal notranslate"><span class="pre">tag</span></code> 属性，则这个输出类型仅对 <code class="docutils literal notranslate"><span class="pre">//root/list/item</span></code> 中也配置了同名 <code class="docutils literal notranslate"><span class="pre">tag</span></code> 属性的条目生效。
+此特性可用于比如让 <code class="docutils literal notranslate"><span class="pre">UE-Csv</span></code> 或 <code class="docutils literal notranslate"><span class="pre">UE-Json</span></code> 的输出仅对客户端配置生效。<code class="docutils literal notranslate"><span class="pre">tag</span></code> 属性可以设置多个，多个用空格隔开，配置多个时任意一个匹配都会启用 <code class="docutils literal notranslate"><span class="pre">output_type</span></code>。</p></li>
+</ul>
+</section>
+<section id="cli">
+<h2>CLI批量转表工具 - 启动参数<a class="headerlink" href="#cli" title="Link to this heading"></a></h2>
+<p>CLI工具在命令行或终端中执行，可用参数可以直接加 <code class="docutils literal notranslate"><span class="pre">-h</span></code> 查看。</p>
+</section>
+<section id="gui">
+<h2>GUI批量转表工具 - 启动参数<a class="headerlink" href="#gui" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--input</span> <span class="pre">&lt;文件名&gt;</span></code> ： 指定初始的转表清单文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--debug-mode</span></code> ： 开启debug模式并启动开发人员工具。（便于调试自定义事件）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--custom-selector/--custom-button</span> <span class="pre">&lt;json文件名&gt;</span></code> : 增加自定义选择器（自定义按钮）,允许多个。（2.3.0版本及以上）</p></li>
+</ul>
+</section>
+<section id="id5">
+<h2>GUI批量转表工具 - 特殊事件<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>GUI工具 <a class="reference external" href="https://github.com/xresloader/xresconv-gui">xresconv-gui</a> 从2.1.0版本开始提供了一些特殊事件，便于用来做工具集成。事件响应内容必须是 <a class="reference external" href="https://nodejs.org/">node.js</a> 代码，可以通过 <code class="docutils literal notranslate"><span class="pre">require('包名')</span></code> 来导入所有官方内置的模块。事件响应上下文还额外提供了一些接口用于和框架交互：</p>
+<section id="gui-root-gui-set-name">
+<h3>GUI事件 - 显示转表项名称 <code class="docutils literal notranslate"><span class="pre">//root/gui/set_name</span></code><a class="headerlink" href="#gui-root-gui-set-name" title="Link to this heading"></a></h3>
+<p>配置示例:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;gui&gt;</span>
+<span class="w">    </span><span class="nt">&lt;set_name</span><span class="w"> </span><span class="na">description=</span><span class="s">&quot;设置转表项的名字字段，每个转表项会调用一次&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span>if<span class="w"> </span>(item_data.file)<span class="w"> </span>{
+<span class="w">            </span>item_data.name<span class="w"> </span>+=<span class="w"> </span>&quot;<span class="w"> </span>(&quot;<span class="w"> </span>+<span class="w"> </span>item_data.file.match(/([^.]+)\.\w+$/)[1]<span class="w"> </span>+<span class="w"> </span>&quot;)&quot;;<span class="w"> </span>//<span class="w"> </span>显示名称追加数据源文件名
+<span class="w">        </span>}
+<span class="w">    </span><span class="nt">&lt;/set_name&gt;</span>
+<span class="nt">&lt;/gui&gt;</span>
+</pre></div>
+</div>
+<p>事件接口和属性变量:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nx">work_dir</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;工作目录(要求版本&gt;=2.2.0)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">configure_file</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;载入的配置文件路径(要求版本&gt;=2.2.0)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">item_data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;条目ID&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">file</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;数据源文件&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">scheme</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;数据源scheme表名&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;描述名称&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">cat</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;分类名称&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;额外选项&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nx">desc</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;描述信息&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">scheme_data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;元数据Key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;元数据Value&quot;</span><span class="p">},</span>
+<span class="w">        </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tag列表&quot;</span><span class="p">],</span><span class="w">     </span><span class="c1">// 版本 &gt;= 2.2.3</span>
+<span class="w">        </span><span class="nx">classes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;class列表&quot;</span><span class="p">]</span><span class="w"> </span><span class="c1">// 版本 &gt;= 2.2.3</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span><span class="w">                                               </span><span class="c1">// 绑定在事件上的私有数据,可用于保存全局状态, 版本 &gt;= 2.3.0</span>
+<span class="w">    </span><span class="nx">alert_warning</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">    </span><span class="c1">// (要求版本&gt;=2.2.0) 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}</span>
+<span class="w">    </span><span class="nx">alert_error</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">               </span><span class="c1">// (要求版本&gt;=2.2.0) 错误弹框</span>
+<span class="w">    </span><span class="nx">log_info</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                        </span><span class="c1">// (要求版本&gt;=2.2.0) 打印info日志</span>
+<span class="w">    </span><span class="nx">log_notice</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                      </span><span class="c1">// 打印notice日志, 版本 &gt;= 2.3.0</span>
+<span class="w">    </span><span class="nx">log_warning</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                     </span><span class="c1">// 打印warning日志, 版本 &gt;= 2.3.0</span>
+<span class="w">    </span><span class="nx">log_error</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">                        </span><span class="c1">// (要求版本&gt;=2.2.0) 打印error日志</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>比如 <a class="reference external" href="xresconv-conf">批量转表配置模板仓库-xresconv-conf</a> 中的 <code class="docutils literal notranslate"><span class="pre">sample.xml</span></code> 文件，我们给所有条目的名字附加上了不带后缀的文件名。</p>
+</section>
+<section id="gui-root-gui-on-before-convert-root-gui-on-after-convert">
+<h3>GUI事件 - 转表前事件和转表成功后事件 <code class="docutils literal notranslate"><span class="pre">//root/gui/on_before_convert</span></code> 和 <code class="docutils literal notranslate"><span class="pre">//root/gui/on_after_convert</span></code><a class="headerlink" href="#gui-root-gui-on-before-convert-root-gui-on-after-convert" title="Link to this heading"></a></h3>
+<p><strong>注意在</strong> <code class="docutils literal notranslate"><span class="pre">//root/gui/on_before_convert</span></code> <strong>和</strong> <code class="docutils literal notranslate"><span class="pre">//root/gui/on_after_convert</span></code> <strong>事件中，执行完成以后一定要调用</strong> <code class="docutils literal notranslate"><span class="pre">resolve()</span></code> <strong>来通知上层框架执行成功，或调用</strong> <code class="docutils literal notranslate"><span class="pre">reject(&quot;错误消息&quot;)</span></code> <strong>来通知上层框架执行失败。</strong>
+<strong>否则执行会一直等待到超时然后失败结束。</strong></p>
+<p>配置示例(创建子进程):</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">gui</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">on_before_convert</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;转表开始前事件&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">timeout</span><span class="o">=</span><span class="s">&quot;15000&quot;</span> <span class="na">description</span><span class="o">=</span><span class="s">&quot;事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步&quot;</span><span class="p">&gt;</span>
+        // 这里可以执行nodejs代码，比如下面是Windows平台执行 echo work_dir
+        var os = require(&quot;os&quot;);
+        var spawn = require(&quot;child_process&quot;).spawn;
+        if (os.type().substr(0, 7).toLowerCase() == &quot;windows&quot;) {
+            var exec = spawn(&quot;cmd&quot;, [&quot;/c&quot;, &quot;echo &quot; + work_dir], {
+                cwd: work_dir,
+                encoding: &#39;utf-8&#39;
+            });
+            exec.stdout.on(&quot;data&quot;, function(data) {
+                log_info(data);
+            });
+            exec.stderr.on(&quot;data&quot;, function(data) {
+                log_error(data);
+            });
+            exec.on(&quot;error&quot;, function(data) {
+                log_error(data.toString());
+                resolve();
+                // reject(&quot;执行失败&quot; + data.toString());
+            });
+            exec.on(&quot;exit&quot;, function(code) {
+                if (code === 0) {
+                    resolve();
+                } else {
+                    resolve();
+                    // reject(&quot;执行失败&quot;);
+                }
+            });
+        } else {
+            resolve();
+        }
+    <span class="p">&lt;/</span><span class="nt">on_before_convert</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">on_after_convert</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;转表完成后事件&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">timeout</span><span class="o">=</span><span class="s">&quot;60000&quot;</span> <span class="na">description</span><span class="o">=</span><span class="s">&quot;事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步&quot;</span><span class="p">&gt;</span>
+        // 同上
+        alert_warning(&quot;自定义转表完成后事件，可以执行任意nodejs脚本&quot;);
+        resolve();
+    <span class="p">&lt;/</span><span class="nt">on_after_convert</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">gui</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>在这是里面必须是一个有效的nodejs代码，其中 <code class="docutils literal notranslate"><span class="pre">//root/gui/on_before_convert[timeout]</span></code> 和 <code class="docutils literal notranslate"><span class="pre">//root/gui/on_after_convert[timeout]</span></code> 可以用于控制超时时间，单位是毫秒。
+传入的参数是：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nx">work_dir</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;执行xresloader的工作目录&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">configure_file</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;载入的配置文件路径(要求版本&gt;=2.2.0)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">xresloader_path</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;xresloader目录&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">global_options</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;全局选项&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VALUE&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="nx">selected_nodes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;选中要执行转表的节点集合&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nx">selected_items</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;选中要执行转表的item对象集合,数据结构同上面的 item_data&quot;</span><span class="p">],</span><span class="w"> </span><span class="c1">// 版本 &gt;= 2.2.3</span>
+<span class="w">    </span><span class="nx">run_seq</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;执行序号&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span><span class="w">                                               </span><span class="c1">// 绑定在事件上的私有数据,可用于保存全局状态, 版本 &gt;= 2.3.0</span>
+<span class="w">    </span><span class="nx">alert_warning</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">    </span><span class="c1">// 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}</span>
+<span class="w">    </span><span class="nx">alert_error</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">               </span><span class="c1">// 错误弹框</span>
+<span class="w">    </span><span class="nx">log_info</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                        </span><span class="c1">// 打印info日志</span>
+<span class="w">    </span><span class="nx">log_error</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                       </span><span class="c1">// 打印error日志</span>
+<span class="w">    </span><span class="nx">log_notice</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                      </span><span class="c1">// 打印notice日志, 版本 &gt;= 2.3.0</span>
+<span class="w">    </span><span class="nx">log_warning</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                     </span><span class="c1">// 打印warning日志, 版本 &gt;= 2.3.0</span>
+<span class="w">    </span><span class="nx">resolve</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                           </span><span class="c1">// 通知上层执行结束,相当于Promise的resolve</span>
+<span class="w">    </span><span class="nx">reject</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                            </span><span class="c1">// 通知上层执行失败,相当于Promise的reject</span>
+<span class="w">    </span><span class="nx">require</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">                             </span><span class="c1">// 相当于 nodejs的 require(name) 用于导入nodejs 模块</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>在 <a class="reference external" href="xresconv-conf">批量转表配置模板仓库-xresconv-conf</a> 中的 <code class="docutils literal notranslate"><span class="pre">sample.xml</span></code> 文件中也有示例。</p>
+</section>
+</section>
+<section id="id8">
+<h2>GUI批量转表工具 - 自定义按钮<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<section id="id9">
+<h3>GUI自定义按钮 - 基本配置<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>从 2.3.0 版本开始，GUI工具增加了启动参数 <code class="docutils literal notranslate"><span class="pre">--custom-selector/--custom-button</span> <span class="pre">&lt;json文件名&gt;``来自定义选择器（自定义按钮）。其中</span> <span class="pre">``json</span></code> 文件的配置格式如下:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span>
+<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;选择器按钮名称&quot;</span><span class="p">,</span><span class="w">                           </span><span class="c1">// [必须] 按钮显示名称</span>
+<span class="w">    </span><span class="s2">&quot;by_schemes&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w">                                    </span><span class="c1">// [必须] item里配置file和scheme属性的选取规则（by_schemes和by_sheets里至少要配置一个）</span>
+<span class="w">        </span><span class="s2">&quot;file&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;文件名, 比如: 资源转换示例.xlsx&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// [必须]</span>
+<span class="w">        </span><span class="s2">&quot;scheme&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;转表规则名, 比如: scheme_upgrade&quot;</span><span class="w">    </span><span class="c1">// [可选] 此项可以为空，如果为空会命中所有file匹配的条目</span>
+<span class="w">    </span><span class="p">}],</span>
+<span class="w">    </span><span class="s2">&quot;by_sheets&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w">                                     </span><span class="c1">// [必须] item里的DataSource子节点配置DataSource的选取规则（by_schemes和by_sheets里至少要配置一个）</span>
+<span class="w">        </span><span class="s2">&quot;file&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;文件名, 比如: 资源转换示例.xlsx&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// [必须]</span>
+<span class="w">        </span><span class="s2">&quot;sheet&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;文件名, 比如: arr_in_arr&quot;</span><span class="w">             </span><span class="c1">// [可选] 此项可以为空，如果为空会命中所有DataSource中第一个选项和file匹配的条目</span>
+<span class="w">    </span><span class="p">}],</span>
+<span class="w">    </span><span class="s2">&quot;default_selected&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">                          </span><span class="c1">// [可选] 默认选中</span>
+<span class="w">    </span><span class="s2">&quot;style&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;outline-secondary&quot;</span><span class="p">,</span><span class="w">                       </span><span class="c1">// [可选] 按钮Style。默认: outline-secondary</span>
+<span class="w">    </span><span class="c1">// &quot;action&quot;: [&quot;unselect_all&quot;, &quot;reload&quot;]             // [可选] 特殊行为，具体内容请参考下面的文档。</span>
+<span class="p">}]</span><span class="w">  </span><span class="c1">// 数组，可以多个按钮</span>
+</pre></div>
+</div>
+<p>上面的配置里， <code class="docutils literal notranslate"><span class="pre">file</span></code> 、 <code class="docutils literal notranslate"><span class="pre">scheme</span></code> 、 <code class="docutils literal notranslate"><span class="pre">sheet</span></code> 字段都支持 <code class="docutils literal notranslate"><span class="pre">完全匹配的名称</span></code> 、 <code class="docutils literal notranslate"><span class="pre">glob:</span> <span class="pre">通配符</span></code> 和 <code class="docutils literal notranslate"><span class="pre">regex:</span> <span class="pre">正则表达式</span></code> 三种形式。</p>
+<p>特殊行为字段 <strong>action</strong> 可以控制按钮使用一些特殊功能而不是简单地选择和反选匹配项，目前支持的特殊功能如下:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reload</span></code> : 重新加载自定义按钮</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select_all</span></code> : 全部选中</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unselect_all</span></code> : 全部反选</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">script:</span> <span class="pre">&lt;脚本名字&gt;</span></code> : 执行脚本，<strong>脚本名字</strong> 为 <code class="docutils literal notranslate"><span class="pre">//root/gui/script</span></code> 节点的 <code class="docutils literal notranslate"><span class="pre">name</span></code> 属性。</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>GUI自定义按钮 - 自定义脚本（点击回调）<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>上述配置中， <code class="docutils literal notranslate"><span class="pre">script:</span> <span class="pre">&lt;脚本名字&gt;</span></code> 里的 <strong>脚本名字</strong> 指向输入XML中 <code class="docutils literal notranslate"><span class="pre">//root/gui/script[name=脚本名字]</span></code> 的节点。比如如下配置中:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;gui&gt;</span>
+<span class="w">    </span><span class="nt">&lt;script</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;自定义脚本&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span>//<span class="w"> </span>同上
+<span class="w">        </span>data.call_times<span class="w"> </span>=<span class="w"> </span>(data.call_times<span class="w"> </span>||<span class="w"> </span>0)<span class="w"> </span>+<span class="w"> </span>1;
+<span class="w">        </span>alert_warning(&quot;自定义脚本，可用于自定义按钮&quot;);
+<span class="w">        </span>log_notice(`自定义脚本:\n可用于自定义按钮<span class="w"> </span>-<span class="w"> </span>notice日志(${data.call_times})`);
+<span class="w">        </span>log_warning(&quot;自定义脚本\n可用于自定义按钮<span class="w"> </span>-<span class="w"> </span>warning日志&quot;);
+<span class="w">        </span>//<span class="w"> </span>resolve();
+<span class="w">        </span>data.running<span class="w"> </span>=<span class="w"> </span>false;
+<span class="w">        </span>resolve();
+<span class="w">    </span><span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/gui&gt;</span>
+</pre></div>
+</div>
+<p>我们可以把action配置成 <code class="docutils literal notranslate"><span class="pre">[&quot;script:</span> <span class="pre">自定义脚本&quot;]</span></code> 来让点击按钮的时候执行这段脚本。和事件一样，这个脚本是一段 <a class="reference external" href="https://nodejs.org/">node.js</a> 代码，额外提供的函数和属性变量有:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nx">work_dir</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;执行xresloader的工作目录&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">xresloader_path</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;xresloader目录&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">global_options</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;全局选项&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VALUE&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="nx">selected_nodes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;选中要执行转表的节点集合&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nx">selected_items</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;选中要执行转表的item对象集合,数据结构同上面的 item_data&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span><span class="w">                                               </span><span class="c1">// 绑定在按钮上的私有数据,可用于保存全局状态</span>
+<span class="w">    </span><span class="nx">alert_warning</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">    </span><span class="c1">// 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}</span>
+<span class="w">    </span><span class="nx">alert_error</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">               </span><span class="c1">// 错误弹框</span>
+<span class="w">    </span><span class="nx">log_info</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                        </span><span class="c1">// 打印info日志</span>
+<span class="w">    </span><span class="nx">log_notice</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                      </span><span class="c1">// 打印notice日志</span>
+<span class="w">    </span><span class="nx">log_warning</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                     </span><span class="c1">// 打印warning日志</span>
+<span class="w">    </span><span class="nx">log_error</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                       </span><span class="c1">// 打印error日志</span>
+<span class="w">    </span><span class="nx">resolve</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                           </span><span class="c1">// 通知上层执行结束,相当于Promise的resolve</span>
+<span class="w">    </span><span class="nx">reject</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{},</span><span class="w">                            </span><span class="c1">// 通知上层执行失败,相当于Promise的reject</span>
+<span class="w">    </span><span class="nx">require</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">                             </span><span class="c1">// 相当于 nodejs的 require(name) 用于导入nodejs 模块</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>GUI自定义按钮 - 按钮样式<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>按钮风格默认是 <code class="docutils literal notranslate"><span class="pre">`outline-secondary`</span></code> 。可选项为(详见: <a class="reference external" href="https://getbootstrap.com/docs/5.0/components/buttons/">https://getbootstrap.com/docs/5.0/components/buttons/</a>):</p>
+<ul class="simple">
+<li><p>outline-primary</p></li>
+<li><p>outline-secondary</p></li>
+<li><p>outline-success</p></li>
+<li><p>outline-danger</p></li>
+<li><p>outline-warning</p></li>
+<li><p>outline-info</p></li>
+<li><p>outline-light</p></li>
+<li><p>outline-dark</p></li>
+<li><p>primary</p></li>
+<li><p>secondary</p></li>
+<li><p>success</p></li>
+<li><p>danger</p></li>
+<li><p>warning</p></li>
+<li><p>info</p></li>
+<li><p>light</p></li>
+<li><p>dark</p></li>
+</ul>
+<p>自定义按钮在 <a class="reference external" href="xresconv-conf">批量转表配置模板仓库-xresconv-conf</a> 中的 <code class="docutils literal notranslate"><span class="pre">sample.xml</span></code> 和 <a class="reference external" href="https://github.com/xresloader/xresconv-gui">xresconv-gui</a> 中的 <code class="docutils literal notranslate"><span class="pre">doc/custom-selector.json</span></code> 文件里也有相应示例。</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="output_format.html" class="btn btn-neutral float-left" title="数据输出和数据加载" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="data_types.html" class="btn btn-neutral float-right" title="数据类型说明" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, xresloader。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
